@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLDANCE - Чат поддержки</title>
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kurale&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- Иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* базовый сброс */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #2b2b18; /* Запасной цвет фона */
+            color: #fff;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- ФОНОВОЕ ВИДЕО --- */
+        .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            /* Легкое затемнение и ч/б, чтобы чат читался */
+            filter: grayscale(80%) brightness(0.4) contrast(1.1);
+            pointer-events: none;
+        }
+
+        /* --- Шапка сайта --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            width: 100%;
+            position: relative;
+            z-index: 100;
+            background-color: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 400;
+            font-family: 'Kurale', serif;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #FCC402;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+            color: #fff;
+            align-items: center;
+        }
+
+        .header-icons i {
+            cursor: pointer;
+            transition: transform 0.2s, color 0.3s;
+        }
+
+        .header-icons i:hover {
+            transform: scale(1.1);
+            color: #FCC402;
+        }
+
+        /* --- Стили для меню настроек (шестерёнка) --- */
+        .settings-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-dropdown {
+            display: none;
+            position: absolute;
+            top: 35px;
+            right: -10px;
+            background-color: rgba(20, 20, 20, 0.95);
+            border: 1px solid #FCC402;
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+        }
+
+        .settings-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        @keyframes fadeInSettings {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-dropdown h4 {
+            color: #FCC402;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .settings-dropdown select {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .settings-dropdown select:focus {
+            border-color: #FCC402;
+        }
+
+        /* --- Стили для меню (бургер) --- */
+        .menu-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 35px;
+            right: -10px;
+            background-color: rgba(20, 20, 20, 0.95);
+            border: 1px solid #FCC402;
+            border-radius: 10px;
+            padding: 15px;
+            width: 250px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .menu-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        .menu-dropdown h4 {
+            color: #FCC402;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-link {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 10px;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: background 0.3s, color 0.3s;
+            margin-bottom: 2px;
+        }
+
+        .menu-link:hover {
+            background-color: rgba(253, 194, 1, 0.2);
+            color: #FCC402;
+        }
+
+        .social-link i {
+            width: 20px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background-color: rgba(255,255,255,0.1);
+            margin: 15px 0;
+        }
+
+        .menu-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+        .menu-dropdown::-webkit-scrollbar-track {
+            background: #222;
+        }
+        .menu-dropdown::-webkit-scrollbar-thumb {
+            background: #FCC402;
+            border-radius: 3px;
+        }
+
+        /* --- Основной контейнер чата --- */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* СТЕКЛЯННЫЙ ЧАТ С АНИМАЦИЕЙ */
+        .chat-box {
+            width: 100%;
+            max-width: 900px;
+            height: 80vh;
+            background-color: rgba(20, 20, 20, 0.6); /* Более прозрачный */
+            border: 1px solid rgba(252, 196, 2, 0.4);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(15px); /* Сильное размытие фона */
+            -webkit-backdrop-filter: blur(15px);
+            
+            /* Анимация плавного появления */
+            animation: fadeInUp 0.8s ease-out forwards, breathe 4s infinite alternate ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Легкое "дыхание" для чата */
+        @keyframes breathe {
+            0% { box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+            100% { box-shadow: 0 20px 50px rgba(252, 196, 2, 0.2); }
+        }
+
+        /* Заголовок чата */
+        .chat-header {
+            background-color: rgba(252, 196, 2, 0.1);
+            padding: 15px 25px;
+            border-bottom: 1px solid rgba(252, 196, 2, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-header .avatar-admin {
+            width: 45px;
+            height: 45px;
+            background-color: #FCC402;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #111;
+            font-size: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(252, 196, 2, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(252, 196, 2, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(252, 196, 2, 0); }
+        }
+
+        .chat-header-info h3 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 20px;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .chat-header-info span {
+            font-family: 'Poppins', sans-serif;
+            font-size: 12px;
+            color: #4CAF50;
+        }
+
+        /* Область сообщений */
+        .chat-messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #FCC402;
+            border-radius: 3px;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 75%;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        @keyframes popIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+
+        .message.admin {
+            align-self: flex-start;
+            align-items: flex-start;
+        }
+
+        .message-text {
+            padding: 12px 18px;
+            border-radius: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .message.user .message-text {
+            background-color: #FCC402;
+            color: #111;
+            border-bottom-right-radius: 2px;
+        }
+
+        .message.admin .message-text {
+            background-color: rgba(50, 50, 50, 0.8);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-bottom-left-radius: 2px;
+        }
+
+        .message-meta {
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 4px;
+            padding: 0 5px;
+        }
+
+        /* Поле ввода */
+        .chat-input-area {
+            padding: 15px 25px;
+            background-color: rgba(0,0,0,0.2);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 15px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background-color: rgba(255,255,255,0.05);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s, background 0.3s;
+        }
+
+        .chat-input-area input:focus {
+            border-color: #FCC402;
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .chat-input-area button {
+            background-color: #FCC402;
+            color: #111;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-input-area button:hover {
+            background-color: #e0ae00;
+            transform: scale(1.1) rotate(-15deg); /* Креативный поворот при наведении */
+        }
+
+        /* --- Адаптивность --- */
+        @media (max-width: 768px) {
+            header { padding: 15px 20px; flex-wrap: wrap; }
+            nav { display: none; }
+
+            .chat-box { height: 85vh; border-radius: 15px; }
+            .message { max-width: 90%; }
+            .chat-messages { padding: 15px; }
+            .chat-input-area { padding: 10px 15px; }
+            .chat-input-area input { padding: 10px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ФОНОВОЕ ВИДЕО -->
+    <video class="bg-video" autoplay loop muted playsinline>
+        <source src="videoo.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <!-- Шапка -->
+    <header>
+        <img src="logo.png" alt="GOLDANCE" class="logo-img">
+        
+        <nav>
+            <ul>
+                <li><a href="osnova.html">Главная</a></li>
+                <li><a href="style.html">Стили танца</a></li>
+                <li><a href="pre.html">Преподаватели</a></li>
+                <li><a href="events.html">События</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-icons">
+            <a href="help.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-envelope"></i></a>
+            
+            <div class="settings-wrapper">
+                <i class="fa-solid fa-gear" id="settingsBtn" onclick="toggleSettings(event)"></i>
+                
+                <div class="settings-dropdown" id="settingsMenu">
+                    <h4><i class="fa-solid fa-globe"></i> Язык</h4>
+                    <select id="langSelect" onchange="changeLang()">
+                        <option value="ru">Русский</option>
+                        <option value="en">English</option>
+                    </select>
+
+                    <h4 style="margin-top: 15px;"><i class="fa-solid fa-credit-card"></i> Оплата</h4>
+                    <select id="paySelect" onchange="changePay()">
+                        <option value="card">Банковская карта</option>
+                        <option value="sbp">СБП</option>
+                        <option value="cash">Наличные</option>
+                    </select>
+                </div>
+            </div>
+
+            <a href="profile.html" style="color: inherit; text-decoration: none;"><i class="fa-regular fa-user"></i></a>
+            
+            <div class="menu-wrapper">
+                <i class="fa-solid fa-bars" id="menuBtn" onclick="toggleMenu(event)"></i>
+                
+                <div class="menu-dropdown" id="burgerMenu">
+                    <h4><i class="fa-solid fa-link"></i> Навигация</h4>
+                    <a href="osnova.html" class="menu-link">Главная</a>
+                    <a href="style.html" class="menu-link">Стили танца</a>
+                    <a href="pre.html" class="menu-link">Преподаватели</a>
+                    <a href="events.html" class="menu-link">События</a>
+                    <a href="about.html" class="menu-link">О нас</a>
+
+                    <div class="menu-divider"></div>
+
+                    <h4><i class="fa-solid fa-share-nodes"></i> Мы в соцсетях</h4>
+                    
+                    <a href="https://vk.com/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-vk" style="color: #0077FF;"></i> ВКонтакте
+                    </a>
+                    <a href="https://t.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-telegram" style="color: #229ED9;"></i> Telegram
+                    </a>
+                    <a href="https://wa.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp
+                    </a>
+                    <a href="mailto:info@goldance.ru" class="menu-link social-link">
+                        <i class="fa-solid fa-envelope" style="color: #FCC402;"></i> info@goldance.ru
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Контейнер чата -->
+    <main class="chat-container">
+        
+        <div class="chat-box">
+            <div class="chat-header">
+                <div class="avatar-admin">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <div class="chat-header-info">
+                    <h3>Служба поддержки</h3>
+                    <span><i class="fa-solid fa-circle" style="font-size: 8px;"></i> Онлайн</span>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                
+                <div class="message admin">
+                    <div class="message-meta">Администратор • 12:00</div>
+                    <div class="message-text">
+                        Здравствуйте! Вы обратились в службу поддержки GOLDANCE. Чем я могу вам помочь?
+                    </div>
+                </div>
+
+                <div class="message user">
+                    <div class="message-meta">Вы • 12:01</div>
+                    <div class="message-text">
+                        Здравствуйте! У меня не работает абонемент. Не могу записаться на занятие.
+                    </div>
+                </div>
+
+                <div class="message admin">
+                    <div class="message-meta">Администратор • 12:02</div>
+                    <div class="message-text">
+                        Подскажите, пожалуйста, ваш логин (ФИО) и какой абонемент вы пытаетесь использовать? Я проверю информацию.
+                    </div>
+                </div>
+
+                <div class="message user">
+                    <div class="message-meta">Вы • 12:03</div>
+                    <div class="message-text">
+                        Парфенова София, безлимитный абонемент на Hip-Hop.
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="messageInput" placeholder="Напишите сообщение..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- СКРИПТ ДЛЯ РАБОТЫ ЧАТА И МЕНЮ -->
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+
+        function addMessage(text, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            const name = (type === 'user') ? 'Вы' : 'Администратор';
+
+            messageDiv.innerHTML = `
+                <div class="message-meta">${name} • ${time}</div>
+                <div class="message-text">${text}</div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (text === '') return;
+
+            addMessage(text, 'user');
+            input.value = '';
+
+            setTimeout(() => {
+                let response = '';
+                const lowerText = text.toLowerCase();
+                
+                if (lowerText.includes('абонемент') || lowerText.includes('запис')) {
+                    response = 'Понял вас. Проблема с абонементом? Сейчас проверю вашу запись в системе. Подождите минутку.';
+                } else if (lowerText.includes('оплат') || lowerText.includes('деньг')) {
+                    response = 'Вопрос по оплате. Подскажите, каким способом вы оплачивали? (карта, СБП, наличные)';
+                } else if (lowerText.includes('привет') || lowerText.includes('здравств')) {
+                    response = 'Здравствуйте! Рад вас видеть. Чем могу помочь?';
+                } else {
+                    response = 'Спасибо за сообщение. Я передал ваш вопрос специалисту. Ожидайте ответа в ближайшее время.';
+                }
+
+                addMessage(response, 'admin');
+            }, 1500);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        /* --- Меню настроек и бургера --- */
+        function toggleSettings(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('settingsMenu');
+            document.getElementById('burgerMenu').classList.remove('show');
+            menu.classList.toggle('show');
+        }
+
+        function toggleMenu(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('burgerMenu');
+            document.getElementById('settingsMenu').classList.remove('show');
+            menu.classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(event) {
+            const settingsMenu = document.getElementById('settingsMenu');
+            const settingsBtn = document.getElementById('settingsBtn');
+            const burgerMenu = document.getElementById('burgerMenu');
+            const burgerBtn = document.getElementById('menuBtn');
+            
+            if (!settingsMenu.contains(event.target) && event.target !== settingsBtn) {
+                settingsMenu.classList.remove('show');
+            }
+            if (!burgerMenu.contains(event.target) && event.target !== burgerBtn) {
+                burgerMenu.classList.remove('show');
+            }
+        });
+
+        function changeLang() {
+            const lang = document.getElementById('langSelect').value;
+            localStorage.setItem('userLang', lang);
+            if (lang === 'en') {
+                alert('Язык изменен на English! (Language changed to English)');
+            } else {
+                alert('Язык изменен на Русский!');
+            }
+        }
+
+        function changePay() {
+            const pay = document.getElementById('paySelect').value;
+            localStorage.setItem('userPay', pay);
+            let text = '';
+            if (pay === 'card') text = 'Банковская карта';
+            if (pay === 'sbp') text = 'СБП (Система быстрых платежей)';
+            if (pay === 'cash') text = 'Наличные';
+            alert('Способ оплаты изменен на: ' + text);
+        }
+
+        window.onload = function() {
+            const savedLang = localStorage.getItem('userLang');
+            const savedPay = localStorage.getItem('userPay');
+            
+            if (savedLang) document.getElementById('langSelect').value = savedLang;
+            if (savedPay) document.getElementById('paySelect').value = savedPay;
+        };
+    </script>
+
+</body>
+</html>

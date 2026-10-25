@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLDANCE - Let's Keep On Dancing</title>
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- ИЗМЕНЕНО: Подключён Kurale вместо Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Permanent+Marker&family=Kurale&display=swap" rel="stylesheet">
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+        
+            background: linear-gradient(135deg, #eebf1d 0%, #d4a017 100%);
+            height: 100vh;
+    
+            color: white;
+            position: relative;
+        }
+
+       
+        .bg-dancer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; 
+            pointer-events: none; 
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; 
+        }
+
+        .bg-dancer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            object-position: center bottom; 
+        }
+
+        .main-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 2; 
+        }
+
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            width: 100%;
+            z-index: 10;
+        }
+
+       
+        .logo-img {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            mix-blend-mode: multiply; 
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        /* ИЗМЕНЕНО: Шрифт Kurale для текста в шапке */
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-family: 'Kurale', serif; /* Шрифт Kurale */
+            font-size: 20px; /* Немного увеличил размер для Kurale */
+            font-weight: 400;
+            transition: opacity 0.3s;
+        }
+
+        nav ul li a:hover {
+            opacity: 0.7;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 20px;
+        }
+
+        .header-icons i {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .header-icons i:hover {
+            transform: scale(1.1);
+        }
+
+       
+        .hero-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            position: relative;
+        }
+
+        .content-wrapper {
+            text-align: center;
+            max-width: 800px;
+            margin-top: -150px; 
+            z-index: 5;
+        }
+
+        .main-title {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 72px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.2); 
+        }
+
+        .subtitle {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 40px;
+            font-weight: 400;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+        }
+
+        .cta-button {
+            width: 180px;
+            height: 50px;
+            background-color: #f1c40f;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .cta-button:hover {
+            background-color: #d4ac0d;
+            transform: translateY(-2px);
+        }
+                /* --- Стили для меню настроек --- */
+        .settings-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-dropdown {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            top: 35px; /* Сдвиг вниз от иконки */
+            right: -10px;
+            background-color: #222;
+            border: 1px solid #FDC201;
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+        }
+
+        /* Показываем меню при добавлении класса */
+        .settings-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        @keyframes fadeInSettings {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-dropdown h4 {
+            color: #FDC201;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .settings-dropdown select {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .settings-dropdown select:focus {
+            border-color: #FDC201;
+        }
+
+      
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            nav {
+                display: none; 
+            }
+
+            .logo-img {
+                height: 40px;
+            }
+
+            .main-title {
+                font-size: 42px;
+                padding: 0 10px;
+                margin-top: 50px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                padding: 0 20px;
+            }
+            
+            .bg-dancer img {
+                
+                transform: scale(1.2); 
+            }
+        }
+                /* --- Стили для меню (бургер) --- */
+        .menu-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-dropdown {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            top: 35px;
+            right: -10px;
+            background-color: #222;
+            border: 1px solid #FCC402;
+            border-radius: 10px;
+            padding: 15px;
+            width: 250px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+            max-height: 80vh; /* Ограничение по высоте */
+            overflow-y: auto; /* Скролл, если не влезает */
+        }
+
+        .menu-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        .menu-dropdown h4 {
+            color: #FCC402;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-link {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 10px;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: background 0.3s, color 0.3s;
+            margin-bottom: 2px;
+        }
+
+        .menu-link:hover {
+            background-color: rgba(253, 194, 1, 0.2);
+            color: #FCC402;
+        }
+
+        .social-link i {
+            width: 20px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background-color: rgba(255,255,255,0.1);
+            margin: 15px 0;
+        }
+
+        /* Стилизация скроллбара для меню */
+        .menu-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+        .menu-dropdown::-webkit-scrollbar-track {
+            background: #222;
+        }
+        .menu-dropdown::-webkit-scrollbar-thumb {
+            background: #FCC402;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+    <script>
+        // Открытие/закрытие меню настроек
+        function toggleSettings(event) {
+            // Останавливаем всплытие клика, чтобы меню сразу не закрывалось
+            event.stopPropagation(); 
+            const menu = document.getElementById('settingsMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Закрытие меню при клике в любом другом месте страницы
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('settingsMenu');
+            const btn = document.getElementById('settingsBtn');
+            // Если кликнули не по меню и не по кнопке — закрываем
+            if (!menu.contains(event.target) && event.target !== btn) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Смена языка
+        function changeLang() {
+            const lang = document.getElementById('langSelect').value;
+            localStorage.setItem('userLang', lang);
+            if (lang === 'en') {
+                alert('Язык изменен на English! (Language changed to English)');
+            } else {
+                alert('Язык изменен на Русский!');
+            }
+        }
+
+        // Смена способа оплаты
+        function changePay() {
+            const pay = document.getElementById('paySelect').value;
+            localStorage.setItem('userPay', pay);
+            let text = '';
+            if (pay === 'card') text = 'Банковская карта';
+            if (pay === 'sbp') text = 'СБП (Система быстрых платежей)';
+            if (pay === 'cash') text = 'Наличные';
+            alert('Способ оплаты изменен на: ' + text);
+        }
+
+        // При загрузке страницы восстанавливаем сохраненные настройки
+        window.onload = function() {
+            const savedLang = localStorage.getItem('userLang');
+            const savedPay = localStorage.getItem('userPay');
+            
+            if (savedLang) document.getElementById('langSelect').value = savedLang;
+            if (savedPay) document.getElementById('paySelect').value = savedPay;
+        };
+                // Открытие/закрытие меню (бургер)
+        function toggleMenu(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('burgerMenu');
+            // Закрываем меню настроек, если оно открыто
+            document.getElementById('settingsMenu').classList.remove('show');
+            menu.classList.toggle('show');
+        }
+
+        // Закрытие меню при клике в любом другом месте
+        document.addEventListener('click', function(event) {
+            const burgerMenu = document.getElementById('burgerMenu');
+            const burgerBtn = document.getElementById('menuBtn');
+            
+            if (!burgerMenu.contains(event.target) && event.target !== burgerBtn) {
+                burgerMenu.classList.remove('show');
+            }
+        });
+
+        // В функции toggleSettings (для шестерёнки) нужно добавить закрытие меню бургера
+        function toggleSettings(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('settingsMenu');
+            // Закрываем меню бургера, если оно открыто
+            document.getElementById('burgerMenu').classList.remove('show');
+            menu.classList.toggle('show');
+        }
+    </script>
+<body>
+
+    
+    <div class="bg-dancer">
+        
+        <img src="XXL.jpg" alt="Dancer Background">
+    </div>
+
+    <div class="main-container">
+        
+        <header>
+           
+            <img src="logo.png" alt="GOLDANCE Logo" class="logo-img">
+            
+            <nav>
+                <ul>
+                    <li><a href="osnova.html">Главная</a></li>
+                <li><a href="style.html">Стили танца</a></li>
+                <li><a href="pre.html">Преподаватели</a></li>
+                <li><a href="events.html">События</a></li> <!-- Страница событий -->
+                <li><a href="about.html">О нас</a></li>
+                </ul>
+            </nav>
+
+               <div class="header-icons">
+            <a href="help.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-envelope"></i></a>
+            
+            <div class="settings-wrapper">
+                <i class="fa-solid fa-gear" id="settingsBtn" onclick="toggleSettings(event)"></i>
+                
+                <div class="settings-dropdown" id="settingsMenu">
+                    <h4><i class="fa-solid fa-globe"></i> Язык</h4>
+                    <select id="langSelect" onchange="changeLang()">
+                        <option value="ru">Русский</option>
+                        <option value="en">English</option>
+                    </select>
+
+                    <h4 style="margin-top: 15px;"><i class="fa-solid fa-credit-card"></i> Оплата</h4>
+                    <select id="paySelect" onchange="changePay()">
+                        <option value="card">Банковская карта</option>
+                        <option value="sbp">СБП</option>
+                        <option value="cash">Наличные</option>
+                    </select>
+                </div>
+            </div>
+
+            <a href="profile.html" style="color: inherit; text-decoration: none;"><i class="fa-regular fa-user"></i></a>
+            
+            <div class="menu-wrapper">
+                <i class="fa-solid fa-bars" id="menuBtn" onclick="toggleMenu(event)"></i>
+                
+                <div class="menu-dropdown" id="burgerMenu">
+                    <h4><i class="fa-solid fa-link"></i> Навигация</h4>
+                    <a href="osnova.html" class="menu-link">Главная</a>
+                    <a href="style.html" class="menu-link">Стили танца</a>
+                    <a href="pre.html" class="menu-link">Преподаватели</a>
+                    <a href="events.html" class="menu-link">События</a>
+                    <a href="about.html" class="menu-link">О нас</a>
+
+                    <div class="menu-divider"></div>
+
+                    <h4><i class="fa-solid fa-share-nodes"></i> Мы в соцсетях</h4>
+                    
+                    <a href="https://vk.com/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-vk" style="color: #0077FF;"></i> ВКонтакте
+                    </a>
+                    <a href="https://t.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-telegram" style="color: #229ED9;"></i> Telegram
+                    </a>
+                    <a href="https://wa.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp
+                    </a>
+                    <a href="mailto:info@goldance.ru" class="menu-link social-link">
+                        <i class="fa-solid fa-envelope" style="color: #FCC402;"></i> info@goldance.ru
+                    </a>
+                </div>
+            </div>
+        </div>
+        </header>
+
+        
+        <main class="hero-section">
+            <div class="content-wrapper">
+                <h1 class="main-title">LET'S KEEP ON DANCING</h1>
+                <p class="subtitle">
+                    "Давай продолжим танцевать". Танцуй так, будто это последний раз, когда ты можешь двигаться. И пусть весь мир подождет.
+                </p>
+                <button class="cta-button"></button>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

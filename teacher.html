@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLDANCE - Преподаватель</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kurale&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; 
+            min-height: 100%; 
+            overflow-x: hidden; 
+            overflow-y: auto;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #5A4B00;
+            color: #fff;
+            position: relative;
+        }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px; width: 100%; position: absolute; top: 0; z-index: 100;
+        }
+
+        .logo-img { height: 50px; width: auto; }
+
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav ul li a {
+            text-decoration: none; color: #fff; font-size: 18px;
+            font-weight: 400; font-family: 'Kurale', serif; transition: color 0.3s;
+        }
+        nav ul li a:hover { color: #FCC402; }
+
+        .header-icons { display: flex; gap: 20px; font-size: 18px; color: #fff; align-items: center; }
+        .header-icons i { cursor: pointer; transition: transform 0.2s, color 0.3s; }
+        .header-icons i:hover { transform: scale(1.1); color: #FCC402; }
+
+        /* --- ВЕРХНЯЯ ЧАСТЬ С ОВАЛОМ --- */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .yellow-oval {
+            position: absolute; top: 50%; left: 55%; transform: translate(-50%, -50%);
+            width: 80vw; height: 85vh; background-color: #FCC402;
+            border-radius: 50%; z-index: 1; pointer-events: none;
+        }
+
+        .teacher-image {
+            position: absolute; left: 2%; bottom: 0; height: 90vh; width: auto;
+            z-index: 2; pointer-events: none;
+            filter: drop-shadow(10px 10px 20px rgba(0,0,0,0.3));
+        }
+
+        .teacher-title-block {
+            position: absolute; top: 15%; left: 50%; z-index: 3; text-shadow: none;
+        }
+
+        .teacher-title-block h1 {
+            font-family: 'Impact', 'Arial Black', sans-serif; font-size: 75px;
+            line-height: 1.0; text-transform: uppercase; margin-bottom: 10px;
+            letter-spacing: 2px; color: #111;
+        }
+
+        .teacher-title-block h2 {
+            font-family: 'Impact', 'Arial Black', sans-serif; font-size: 60px;
+            line-height: 1.0; text-transform: uppercase; margin-bottom: 10px; color: #111;
+        }
+
+        .teacher-title-block .experience {
+            font-family: 'Impact', 'Arial Black', sans-serif; font-size: 45px;
+            text-transform: uppercase; color: #111;
+        }
+
+        .teacher-description {
+            position: absolute; top: 38%; right: 10%; width: 35%; text-align: right;
+            z-index: 3; font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 30px; line-height: 1.2; color: #111; text-shadow: none;
+        }
+
+                /* --- СТРЕЛКА ВНУТРИ ОВАЛА --- */
+        .scroll-arrow {
+            position: absolute;
+            bottom: 12%; /* Подняли выше, чтобы точно была на овале */
+            left: 55%; /* По центру овала */
+            transform: translateX(-50%);
+            z-index: 4;
+            color: #111; /* Темная стрелка на желтом фоне */
+            font-size: 60px; /* Сделали стрелку больше */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: bounceArrow 1.5s infinite;
+            cursor: pointer; /* Добавили курсор-руку */
+        }
+
+        .scroll-arrow span {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 32px; /* Сделали текст больше */
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #111;
+        }
+
+        /* Анимация прыжка (учитываем смещение влево) */
+        @keyframes bounceArrow {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -15px); } /* Прыжок выше */
+            60% { transform: translate(-50%, -8px); }
+        }
+
+        /* --- БЛОК С ВИДЕО (ТЕПЕРЬ ЖЕЛТЫЙ ФОН) --- */
+        .video-section {
+            position: relative;
+            /* Изменено: теперь фон желтый, как овал */
+            background-color: #FCC402; 
+            padding: 60px 20px 80px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 5;
+        }
+
+        .video-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .video-block {
+            background-color: #000; /* Оставляем видео-блоки черными для контраста */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: transform 0.3s;
+            width: 280px; 
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-block:hover {
+            transform: scale(1.03);
+        }
+
+        .video-block video,
+        .video-block iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border: none;
+            display: block;
+        }
+
+        /* --- АДАПТИВНОСТЬ --- */
+        @media (max-width: 1024px) {
+            .teacher-title-block h1 { font-size: 50px; }
+            .teacher-title-block h2 { font-size: 40px; }
+            .teacher-title-block .experience { font-size: 30px; }
+            .teacher-description { font-size: 20px; width: 40%; top: 35%; }
+            .teacher-image { height: 70vh; left: 0; }
+            .teacher-title-block { left: 45%; }
+            .scroll-arrow { left: 50%; } /* Чуть корректируем для планшетов */
+        }
+
+        @media (max-width: 768px) {
+            .hero-section { height: auto; min-height: 100vh; padding-bottom: 50px; }
+            
+            .yellow-oval {
+                position: relative; top: 0; left: 0; transform: none;
+                width: 150vw; height: 80vh; margin-left: -25vw; margin-top: -10vh;
+            }
+            .teacher-image {
+                position: relative; left: 50%; transform: translateX(-50%);
+                height: 60vh; bottom: auto; margin-top: -30vh; display: block;
+            }
+            .teacher-title-block {
+                position: relative; top: auto; left: auto;
+                text-align: center; margin-top: 20px; padding: 0 20px;
+            }
+            .teacher-title-block h1 { font-size: 40px; }
+            .teacher-title-block h2 { font-size: 30px; }
+            .teacher-title-block .experience { font-size: 24px; }
+            .teacher-description {
+                position: relative; top: auto; right: auto; width: 90%;
+                margin: 20px auto; text-align: center; font-size: 20px;
+            }
+
+            .scroll-arrow { bottom: 2%; font-size: 30px; }
+            .scroll-arrow span { font-size: 12px; }
+
+            .video-block {
+                width: 100%; 
+                max-width: 350px;
+                height: 450px;
+            }
+        }
+
+        /* --- Меню и настройки (без изменений) --- */
+        .settings-wrapper { position: relative; display: inline-block; }
+        .settings-dropdown {
+            display: none; position: absolute; top: 35px; right: -10px;
+            background-color: #222; border: 1px solid #FDC201; border-radius: 10px;
+            padding: 15px; width: 220px; z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: left;
+        }
+        .settings-dropdown.show { display: block; animation: fadeInSettings 0.2s ease-out; }
+        @keyframes fadeInSettings {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .settings-dropdown h4 {
+            color: #FDC201; font-size: 14px; margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif; text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .settings-dropdown select {
+            width: 100%; padding: 8px; background-color: #333; color: #fff;
+            border: 1px solid #444; border-radius: 5px;
+            font-family: 'Montserrat', sans-serif; cursor: pointer; outline: none;
+        }
+        .settings-dropdown select:focus { border-color: #FDC201; }
+
+        .not-found {
+            position: relative; z-index: 10; padding: 200px 50px;
+            color: #fff; font-family: 'Montserrat', sans-serif;
+        }
+        .not-found a { color: #FCC402; }
+
+        .menu-wrapper { position: relative; display: inline-block; }
+        .menu-dropdown {
+            display: none; position: absolute; top: 35px; right: -10px;
+            background-color: #222; border: 1px solid #FCC402; border-radius: 10px;
+            padding: 15px; width: 250px; z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: left;
+            max-height: 80vh; overflow-y: auto;
+        }
+        .menu-dropdown.show { display: block; animation: fadeInSettings 0.2s ease-out; }
+        .menu-dropdown h4 {
+            color: #FCC402; font-size: 14px; margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif; text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .menu-link {
+            display: block; color: #fff; text-decoration: none;
+            padding: 8px 10px; border-radius: 5px;
+            font-family: 'Montserrat', sans-serif; font-size: 14px;
+            transition: background 0.3s, color 0.3s; margin-bottom: 2px;
+        }
+        .menu-link:hover { background-color: rgba(253, 194, 1, 0.2); color: #FCC402; }
+        .social-link i { width: 20px; text-align: center; margin-right: 8px; }
+        .menu-divider { height: 1px; background-color: rgba(255,255,255,0.1); margin: 15px 0; }
+        .menu-dropdown::-webkit-scrollbar { width: 6px; }
+        .menu-dropdown::-webkit-scrollbar-track { background: #222; }
+        .menu-dropdown::-webkit-scrollbar-thumb { background: #FCC402; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.png" alt="GOLDANCE" class="logo-img">
+        <nav>
+            <ul>
+                <li><a href="osnova.html">Главная</a></li>
+                <li><a href="style.html">Стили танца</a></li>
+                <li><a href="pre.html">Преподаватели</a></li>
+                <li><a href="events.html">События</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <a href="help.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-envelope"></i></a>
+            
+            <div class="settings-wrapper">
+                <i class="fa-solid fa-gear" id="settingsBtn" onclick="toggleSettings(event)"></i>
+                <div class="settings-dropdown" id="settingsMenu">
+                    <h4><i class="fa-solid fa-globe"></i> Язык</h4>
+                    <select id="langSelect" onchange="changeLang()">
+                        <option value="ru">Русский</option>
+                        <option value="en">English</option>
+                    </select>
+                    <h4 style="margin-top: 15px;"><i class="fa-solid fa-credit-card"></i> Оплата</h4>
+                    <select id="paySelect" onchange="changePay()">
+                        <option value="card">Банковская карта</option>
+                        <option value="sbp">СБП</option>
+                        <option value="cash">Наличные</option>
+                    </select>
+                </div>
+            </div>
+
+            <a href="profile.html" style="color: inherit; text-decoration: none;"><i class="fa-regular fa-user"></i></a>
+            
+            <div class="menu-wrapper">
+                <i class="fa-solid fa-bars" id="menuBtn" onclick="toggleMenu(event)"></i>
+                <div class="menu-dropdown" id="burgerMenu">
+                    <h4><i class="fa-solid fa-link"></i> Навигация</h4>
+                    <a href="osnova.html" class="menu-link">Главная</a>
+                    <a href="style.html" class="menu-link">Стили танца</a>
+                    <a href="pre.html" class="menu-link">Преподаватели</a>
+                    <a href="events.html" class="menu-link">События</a>
+                    <a href="about.html" class="menu-link">О нас</a>
+                    <div class="menu-divider"></div>
+                    <h4><i class="fa-solid fa-share-nodes"></i> Мы в соцсетях</h4>
+                    <a href="https://vk.com/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-vk" style="color: #0077FF;"></i> ВКонтакте
+                    </a>
+                    <a href="https://t.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-telegram" style="color: #229ED9;"></i> Telegram
+                    </a>
+                    <a href="https://wa.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp
+                    </a>
+                    <a href="mailto:info@goldance.ru" class="menu-link social-link">
+                        <i class="fa-solid fa-envelope" style="color: #FCC402;"></i> info@goldance.ru
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ВЕРХНЯЯ ЧАСТЬ (Овал с фото и текстом) -->
+    <section class="hero-section">
+        <div class="yellow-oval"></div>
+
+        <img id="teacher-photo" src="" alt="" class="teacher-image">
+
+        <div class="teacher-title-block">
+            <h1 id="teacher-name"></h1>
+            <h2 id="teacher-style"></h2>
+            <div class="experience" id="teacher-experience"></div>
+        </div>
+
+        <div class="teacher-description" id="teacher-desc"></div>
+
+        <!-- Стрелка внутри овала -->
+        <div class="scroll-arrow">
+            <span>Смотреть видео</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- НИЖНЯЯ ЧАСТЬ (Видео, теперь на желтом фоне) -->
+    <section class="video-section">
+        <div class="video-grid" id="video-grid"></div>
+    </section>
+
+    <script src="teachers.js"></script>
+    <script>
+        const params = new URLSearchParams(location.search);
+        const id = params.get("id");
+        const t = teachers.find(x => x.id === id);
+
+        if (!t) {
+            document.body.innerHTML =
+                '<div class="not-found"><h2>Преподаватель не найден.</h2>' +
+                '<p style="margin-top:20px;"><a href="pre.html">← Вернуться к списку преподавателей</a></p></div>';
+        } else {
+            document.title = "GOLDANCE - " + t.name;
+
+            const photo = document.getElementById("teacher-photo");
+            photo.src = t.photo;
+            photo.alt = t.name;
+
+            document.getElementById("teacher-name").textContent = t.name;
+            document.getElementById("teacher-style").textContent = t.style;
+            document.getElementById("teacher-experience").textContent = t.experience;
+            document.getElementById("teacher-desc").textContent = t.desc;
+
+            const videoGrid = document.getElementById("video-grid");
+            
+            if (t.videos && t.videos.length > 0) {
+                videoGrid.innerHTML = t.videos.map(videoLink => {
+                    if (videoLink.includes('youtube.com') || videoLink.includes('youtu.be')) {
+                        let embedLink = videoLink;
+                        if (videoLink.includes('youtu.be/')) {
+                            const vidId = videoLink.split('youtu.be/')[1].split('?')[0];
+                            embedLink = `https://www.youtube.com/embed/${vidId}`;
+                        } else if (videoLink.includes('watch?v=')) {
+                            const vidId = videoLink.split('watch?v=')[1].split('&')[0];
+                            embedLink = `https://www.youtube.com/embed/${vidId}`;
+                        }
+                        return `
+                            <div class="video-block">
+                                <iframe src="${embedLink}" 
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                        referrerpolicy="strict-origin-when-cross-origin"
+                                        allowfullscreen>
+                                </iframe>
+                            </div>
+                        `;
+                    } else if (videoLink === "Видео") {
+                        return `<div class="video-block" style="color:#666; font-family:'Poppins', sans-serif; font-size:18px;">Видео скоро появится</div>`;
+                    } else {
+                        return `
+                            <div class="video-block">
+                                <video controls playsinline preload="metadata">
+                                    <source src="${videoLink}" type="video/mp4">
+                                    Ваш браузер не поддерживает видео.
+                                </video>
+                            </div>
+                        `;
+                    }
+                }).join("");
+            } else {
+                 videoGrid.innerHTML = `<div class="video-block" style="color:#666; font-family:'Poppins', sans-serif; font-size:18px;">Видео скоро появится</div>`;
+            }
+        }
+
+        function toggleSettings(event) {
+            event.stopPropagation(); 
+            document.getElementById('burgerMenu').classList.remove('show');
+            document.getElementById('settingsMenu').classList.toggle('show');
+        }
+        function toggleMenu(event) {
+            event.stopPropagation(); 
+            document.getElementById('settingsMenu').classList.remove('show');
+            document.getElementById('burgerMenu').classList.toggle('show');
+        }
+        document.addEventListener('click', function(event) {
+            const sm = document.getElementById('settingsMenu');
+            const sb = document.getElementById('settingsBtn');
+            const bm = document.getElementById('burgerMenu');
+            const bb = document.getElementById('menuBtn');
+            if (!sm.contains(event.target) && event.target !== sb) sm.classList.remove('show');
+            if (!bm.contains(event.target) && event.target !== bb) bm.classList.remove('show');
+        });
+        function changeLang() {
+            const lang = document.getElementById('langSelect').value;
+            localStorage.setItem('userLang', lang);
+            alert(lang === 'en' ? 'Language changed to English!' : 'Язык изменен на Русский!');
+        }
+        function changePay() {
+            const pay = document.getElementById('paySelect').value;
+            localStorage.setItem('userPay', pay);
+            const map = { card: 'Банковская карта', sbp: 'СБП', cash: 'Наличные' };
+            alert('Способ оплаты изменен на: ' + map[pay]);
+        }
+        window.onload = function() {
+            const savedLang = localStorage.getItem('userLang');
+            const savedPay = localStorage.getItem('userPay');
+            if (savedLang) document.getElementById('langSelect').value = savedLang;
+            if (savedPay) document.getElementById('paySelect').value = savedPay;
+        };
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Ищем все иконки пользователя в шапке
+        const userIcons = document.querySelectorAll('a[href="vxod.html"]');
+        
+        // Проверяем, есть ли сохраненный токен (значит, человек вошел)
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+            // Если вошел, меняем ссылку у всех иконок на profile.html
+            userIcons.forEach(icon => {
+                icon.href = 'profile.html';
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

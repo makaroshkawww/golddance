@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLDANCE - О нас</title>
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kurale&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- Иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* базовый сброс */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+            position: relative;
+            background-color: #2b2b18;
+        }
+
+        /* --- ФОН (ВИДЕО) --- */
+        .bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.5) contrast(1.1); /* Чуть сильнее затемнил */
+            pointer-events: none;
+        }
+
+        /* Затемняющий слой поверх видео */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.85) 100%);
+            z-index: -1;
+        }
+
+        /* --- Шапка сайта --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            width: 100%;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 400;
+            font-family: 'Kurale', serif;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #FCC402;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+            color: #fff;
+            align-items: center;
+        }
+
+        .header-icons i {
+            cursor: pointer;
+            transition: transform 0.2s, color 0.3s;
+        }
+
+        .header-icons i:hover {
+            transform: scale(1.1);
+            color: #FCC402;
+        }
+
+        /* --- Стили для меню настроек --- */
+        .settings-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-dropdown {
+            display: none;
+            position: absolute;
+            top: 35px;
+            right: -10px;
+            background-color: #222;
+            border: 1px solid #FCC402;
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+        }
+
+        .settings-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        @keyframes fadeInSettings {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-dropdown h4 {
+            color: #FCC402;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .settings-dropdown select {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .settings-dropdown select:focus {
+            border-color: #FCC402;
+        }
+
+        /* --- Стили для меню (бургер) --- */
+        .menu-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 35px;
+            right: -10px;
+            background-color: #222;
+            border: 1px solid #FCC402;
+            border-radius: 10px;
+            padding: 15px;
+            width: 250px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .menu-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        .menu-dropdown h4 {
+            color: #FCC402;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-link {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 10px;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: background 0.3s, color 0.3s;
+            margin-bottom: 2px;
+        }
+
+        .menu-link:hover {
+            background-color: rgba(253, 194, 1, 0.2);
+            color: #FCC402;
+        }
+
+        .social-link i {
+            width: 20px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background-color: rgba(255,255,255,0.1);
+            margin: 15px 0;
+        }
+
+        .menu-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+        .menu-dropdown::-webkit-scrollbar-track {
+            background: #222;
+        }
+        .menu-dropdown::-webkit-scrollbar-thumb {
+            background: #FCC402;
+            border-radius: 3px;
+        }
+
+        /* --- Основной контейнер (НА ВСЮ ШИРИНУ) --- */
+        .main-container {
+            position: relative;
+            width: 100%;
+            min-height: calc(100vh - 90px);
+            padding: 40px 5% 100px 5%; /* Отступы по бокам в процентах */
+            z-index: 2;
+        }
+
+        /* Заголовки по центру */
+        .about-title {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 72px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 3px;
+            color: #fff;
+            animation: textGlow 2s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { text-shadow: 0 0 5px rgba(255,255,255,0.2); }
+            to { text-shadow: 0 0 20px rgba(252, 196, 2, 0.6); }
+        }
+
+        .about-title span {
+            color: #FCC402;
+        }
+
+        .about-subtitle {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 28px;
+            text-align: center;
+            color: #FCC402;
+            margin-bottom: 50px;
+            letter-spacing: 2px;
+        }
+
+        .about-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #eee;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-text b {
+            color: #FCC402;
+            font-weight: 600;
+        }
+
+        /* --- Сетка преимуществ --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 50px auto;
+            max-width: 1200px;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.4); /* Темная полупрозрачная плашка */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s, background 0.3s, border-color 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(253, 194, 1, 0.15);
+            border-color: #FCC402;
+        }
+
+        .feature-card i {
+            font-size: 40px;
+            color: #FCC402;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover i {
+            transform: rotate(10deg) scale(1.2);
+        }
+
+        .feature-card h3 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .feature-card p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.4;
+        }
+
+        /* --- Прикольные комментарии --- */
+        .fun-comment {
+            background: rgba(253, 194, 1, 0.15);
+            border-left: 4px solid #FCC402;
+            padding: 20px 25px;
+            border-radius: 0 15px 15px 0;
+            margin: 40px auto;
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            font-style: italic;
+            color: #fff;
+            text-align: left;
+            max-width: 1000px;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .fun-comment:hover {
+            transform: translateX(10px);
+            background: rgba(253, 194, 1, 0.25);
+        }
+
+        .fun-comment i {
+            color: #FCC402;
+            margin-right: 10px;
+        }
+
+        /* --- БЛОКИ: Места выступлений и Афиша --- */
+        .info-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 50px auto;
+            max-width: 1400px;
+        }
+
+        .info-block {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            transition: transform 0.3s, border-color 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .info-block:hover {
+            transform: translateY(-5px);
+            border-color: #FCC402;
+        }
+
+        .info-block h3 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 28px;
+            color: #FCC402;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-block ul {
+            list-style: none;
+            padding: 0;
+            columns: 2; /* В 2 колонки для городов */
+            column-gap: 30px;
+        }
+
+        .info-block ul li {
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            color: #ddd;
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.4;
+            break-inside: avoid;
+        }
+
+        .info-block ul li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #FCC402;
+        }
+
+        /* --- БЛОК НАГРАД --- */
+        .awards-section {
+            margin: 60px auto;
+            max-width: 1600px;
+        }
+
+        .awards-title {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 48px;
+            color: #FCC402;
+            text-align: center;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 колонки */
+            gap: 25px;
+        }
+
+        /* Карточка награды (жёлтая плашка) */
+        .award-item {
+            background: #FCC402;
+            color: #111;
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .award-item:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(252, 196, 2, 0.6);
+        }
+
+        .award-item i {
+            font-size: 38px;
+            color: #111;
+            margin-bottom: 10px;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .award-item:hover i {
+            transform: rotate(15deg) scale(1.2);
+        }
+
+        .award-item h4 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 20px;
+            margin-bottom: 5px;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .award-item p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* Плашка "И Т.Д." */
+        .award-item.and-more {
+            background: rgba(252, 196, 2, 0.15);
+            border: 2px dashed #FCC402;
+            color: #FCC402;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .award-item.and-more i {
+            color: #FCC402;
+            font-size: 45px;
+        }
+
+        .award-item.and-more h4 {
+            font-size: 28px;
+            margin-top: 10px;
+        }
+
+        /* Афиша концерта (на всю ширину) */
+        .concert-poster {
+            margin: 60px auto;
+            max-width: 1400px;
+            background: linear-gradient(135deg, rgba(252, 196, 2, 0.2) 0%, rgba(20, 20, 20, 0.6) 100%);
+            border: 2px solid #FCC402;
+            border-radius: 25px;
+            padding: 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            animation: pulseBorder 3s infinite alternate;
+        }
+
+        @keyframes pulseBorder {
+            from { box-shadow: 0 0 20px rgba(252, 196, 2, 0.2); }
+            to { box-shadow: 0 0 50px rgba(252, 196, 2, 0.5); }
+        }
+
+        .concert-poster h3 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 42px;
+            color: #fff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .concert-poster .date {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            color: #FCC402;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .concert-poster p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            color: #eee;
+            margin-bottom: 30px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .concert-poster .poster-btn {
+            display: inline-block;
+            background-color: #FCC402;
+            color: #111;
+            padding: 18px 60px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+        }
+
+        .concert-poster .poster-btn:hover {
+            background-color: #e0ae00;
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(252, 196, 2, 0.4);
+        }
+
+        /* --- Адаптивность --- */
+        @media (max-width: 1200px) {
+            .awards-grid { grid-template-columns: repeat(3, 1fr); }
+            .about-title { font-size: 60px; }
+        }
+
+        @media (max-width: 1024px) {
+            .info-section { grid-template-columns: 1fr; }
+            .awards-grid { grid-template-columns: repeat(2, 1fr); }
+            .info-block ul { columns: 1; } /* На планшетах города в 1 колонку */
+        }
+
+        @media (max-width: 900px) {
+            .about-title { font-size: 48px; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 15px 20px; flex-wrap: wrap; }
+            nav { display: none; }
+
+            .main-container { padding: 20px 15px 60px 15px; }
+            .about-title { font-size: 36px; }
+            .about-subtitle { font-size: 20px; }
+            .about-text { font-size: 15px; }
+            
+            .features-grid { grid-template-columns: 1fr; gap: 20px; }
+            .fun-comment { font-size: 15px; padding: 15px; }
+            
+            .concert-poster { padding: 30px 20px; }
+            .concert-poster h3 { font-size: 28px; }
+            .concert-poster .date { font-size: 18px; }
+            .concert-poster p { font-size: 15px; }
+            
+            .awards-grid { grid-template-columns: 1fr; }
+            .awards-title { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ФОНОВОЕ ВИДЕО -->
+    <video class="bg-video" autoplay loop muted playsinline>
+        <source src="video67.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <!-- Затемняющий слой -->
+    <div class="bg-overlay"></div>
+
+    <!-- Шапка -->
+    <header>
+        <img src="logo.png" alt="GOLDANCE" class="logo-img">
+        
+        <nav>
+            <ul>
+                <li><a href="osnova.html">Главная</a></li>
+                <li><a href="style.html">Стили танца</a></li>
+                <li><a href="pre.html">Преподаватели</a></li>
+                <li><a href="events.html">События</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-icons">
+            <a href="help.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-envelope"></i></a>
+            
+            <div class="settings-wrapper">
+                <i class="fa-solid fa-gear" id="settingsBtn" onclick="toggleSettings(event)"></i>
+                
+                <div class="settings-dropdown" id="settingsMenu">
+                    <h4><i class="fa-solid fa-globe"></i> Язык</h4>
+                    <select id="langSelect" onchange="changeLang()">
+                        <option value="ru">Русский</option>
+                        <option value="en">English</option>
+                    </select>
+
+                    <h4 style="margin-top: 15px;"><i class="fa-solid fa-credit-card"></i> Оплата</h4>
+                    <select id="paySelect" onchange="changePay()">
+                        <option value="card">Банковская карта</option>
+                        <option value="sbp">СБП</option>
+                        <option value="cash">Наличные</option>
+                    </select>
+                </div>
+            </div>
+
+            <a href="profile.html" style="color: inherit; text-decoration: none;"><i class="fa-regular fa-user"></i></a>
+            
+            <div class="menu-wrapper">
+                <i class="fa-solid fa-bars" id="menuBtn" onclick="toggleMenu(event)"></i>
+                
+                <div class="menu-dropdown" id="burgerMenu">
+                    <h4><i class="fa-solid fa-link"></i> Навигация</h4>
+                    <a href="osnova.html" class="menu-link">Главная</a>
+                    <a href="style.html" class="menu-link">Стили танца</a>
+                    <a href="pre.html" class="menu-link">Преподаватели</a>
+                    <a href="events.html" class="menu-link">События</a>
+                    <a href="about.html" class="menu-link">О нас</a>
+
+                    <div class="menu-divider"></div>
+
+                    <h4><i class="fa-solid fa-share-nodes"></i> Мы в соцсетях</h4>
+                    
+                    <a href="https://vk.com/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-vk" style="color: #0077FF;"></i> ВКонтакте
+                    </a>
+                    <a href="https://t.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-telegram" style="color: #229ED9;"></i> Telegram
+                    </a>
+                    <a href="https://wa.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp
+                    </a>
+                    <a href="mailto:info@goldance.ru" class="menu-link social-link">
+                        <i class="fa-solid fa-envelope" style="color: #FCC402;"></i> info@goldance.ru
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент (НА ВСЮ СТРАНИЦУ) -->
+    <main class="main-container">
+        
+        <h1 class="about-title">О <span>GOLDANCE</span></h1>
+        <div class="about-subtitle">Место, где зажигаются звезды</div>
+        
+        <p class="about-text">
+            <b>GOLDANCE</b> — это не просто школа танцев. Это огромная семья, где каждый найдет свой стиль, раскроет потенциал и обретет уверенность в себе.
+        </p>
+
+        <div class="fun-comment">
+            <i class="fa-solid fa-fire"></i>
+            <b>У нас самые лучшие преподаватели!</b> Они не просто учат движениям, они вкладывают душу, заряжают энергией и всегда поддерживают.
+        </div>
+
+        <p class="about-text">
+            Мы славимся на весь город своей невероятной атмосферой, сильнейшими педагогами и победами наших учеников на всероссийских чемпионатах. Наши выпускники танцуют на больших сценах, снимаются в клипах и работают в лучших шоу.
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fa-solid fa-location-dot"></i>
+                <h3>Города</h3>
+                <p>Москва, СПб, Казань, Екатеринбург, Новосибирск и другие</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-trophy"></i>
+                <h3>Победы</h3>
+                <p>Наши ученики — призеры всероссийских баттлов и чемпионатов</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-heart"></i>
+                <h3>Атмосфера</h3>
+                <p>Крутые вечеринки, джемы и баттлы каждые выходные</p>
+            </div>
+        </div>
+
+        <div class="fun-comment">
+            <i class="fa-solid fa-face-laugh-beam"></i>
+            <b>Нас любят за индивидуальный подход и драйв!</b> Тут ты не просто ученик — ты часть большой танцевальной банды.
+        </div>
+
+        <!-- Места выступлений и Афиша -->
+        <div class="info-section">
+            
+            <div class="info-block">
+                <h3><i class="fa-solid fa-map-location-dot"></i> Где мы выступаем</h3>
+                <ul>
+                    <li>Москва — Кремлевский Дворец</li>
+                    <li>Санкт-Петербург — Филармония</li>
+                    <li>Казань — Дом Культуры им. Ленина</li>
+                    <li>Екатеринбург — Международный фестиваль</li>
+                    <li>Новосибирск — Театр Оперы и Балета</li>
+                    <li><b>Тверь — ДК «Химволокно»</b></li>
+                    <li><b>Тверь — ДК «Пролетарка»</b></li>
+                    <li>Сочи — Ледовый Дворец «Большой»</li>
+                    <li>Нижний Новгород — Кремлевский концертный зал</li>
+                    <li>Самара — Филармония</li>
+                    <li>Краснодар — Дворец спорта «Олимп»</li>
+                </ul>
+            </div>
+
+            <div class="info-block" style="display: flex; flex-direction: column; justify-content: center; background: linear-gradient(135deg, rgba(252, 196, 2, 0.15) 0%, rgba(20, 20, 20, 0.6) 100%); border: 2px solid #FCC402; animation: pulseBorder 3s infinite alternate; backdrop-filter: blur(10px);">
+                <h3 style="justify-content: center;"><i class="fa-solid fa-calendar-days"></i> Ближайший концерт</h3>
+                <div style="text-align: center;">
+                    <p style="font-family: 'Poppins', sans-serif; font-size: 18px; color: #FCC402; margin-bottom: 10px; font-weight: 600;">25 мая 2026 в 19:00</p>
+                    <p style="font-family: 'Poppins', sans-serif; font-size: 16px; color: #ddd; margin-bottom: 25px;">Грандиозное отчетное шоу с участием всех групп!</p>
+                    <a href="events.html" class="poster-btn" style="display: inline-block; background: #FCC402; color: #111; padding: 15px 45px; border-radius: 10px; text-decoration: none; font-weight: 700;">Купить билет</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- БЛОК НАГРАД -->
+        <div class="awards-section">
+            <h2 class="awards-title"><i class="fa-solid fa-medal"></i> Наши награды</h2>
+            
+            <div class="awards-grid">
+                <div class="award-item">
+                    <i class="fa-solid fa-trophy"></i>
+                    <h4>Гран-при</h4>
+                    <p>Чемпионат России по Hip-Hop (2025)</p>
+                </div>
+                <div class="award-item">
+                    <i class="fa-solid fa-award"></i>
+                    <h4>1 место</h4>
+                    <p>Всероссийский баттл «Street Star» (2024)</p>
+                </div>
+                <div class="award-item">
+                    <i class="fa-solid fa-medal"></i>
+                    <h4>Золото</h4>
+                    <p>Кубок Мира по Breakdance (2024)</p>
+                </div>
+                <div class="award-item">
+                    <i class="fa-solid fa-star"></i>
+                    <h4>Лучший коллектив</h4>
+                    <p>Dance Awards (2023)</p>
+                </div>
+                <div class="award-item">
+                    <i class="fa-solid fa-crown"></i>
+                    <h4>Серебро</h4>
+                    <p>Чемпионат Европы по Vogue (2023)</p>
+                </div>
+                <div class="award-item">
+                    <i class="fa-solid fa-certificate"></i>
+                    <h4>Лучшая школа</h4>
+                    <p>Премия «Танец года» (2022)</p>
+                </div>
+                <div class="award-item">
+                    <i class="fa-solid fa-gem"></i>
+                    <h4>Победа</h4>
+                    <p>Кубок «Золотая осень» (2022)</p>
+                </div>
+                <div class="award-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>1 место</h4>
+                    <p>Фестиваль уличных культур (2021)</p>
+                </div>
+                <div class="award-item">
+                    <i class="fa-solid fa-heart"></i>
+                    <h4>Приз зрительских симпатий</h4>
+                    <p>Dance Battle (2021)</p>
+                </div>
+                <div class="award-item">
+                    <i class="fa-solid fa-fire"></i>
+                    <h4>Топ-10 школ</h4>
+                    <p>Рейтинг Dance Russia (2020)</p>
+                </div>
+                <div class="award-item">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                    <h4>Лучшая хореография</h4>
+                    <p>Конкурс «Новый ритм» (2020)</p>
+                </div>
+                
+                <!-- ПЛАШКА "И Т.Д." -->
+                <div class="award-item and-more">
+                    <i class="fa-solid fa-ellipsis"></i>
+                    <h4>И т.д.</h4>
+                    <p>У нас ещё очень много наград!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Афиша концерта (на всю ширину, внизу) -->
+        <div class="concert-poster">
+            <h3>Грандиозный отчетный концерт</h3>
+            <div class="date"><i class="fa-solid fa-calendar-days"></i> 25 мая 2026 года в 19:00</div>
+            <p>Приглашаем вас на главное событие года! В программе: выступления всех групп, премьера новых номеров, баттлы между преподавателями и розыгрыш призов!</p>
+            <a href="events.html" class="poster-btn">Купить билет</a>
+        </div>
+
+        <p class="about-text" style="margin-top: 40px;">
+            Мы верим, что танец доступен каждому — независимо от уровня подготовки и возраста. Главное — это желание двигаться и открывать для себя что-то новое.
+        </p>
+
+    </main>
+
+    <!-- Скрипты -->
+    <script>
+        function toggleSettings(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('settingsMenu');
+            document.getElementById('burgerMenu').classList.remove('show');
+            menu.classList.toggle('show');
+        }
+
+        function toggleMenu(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('burgerMenu');
+            document.getElementById('settingsMenu').classList.remove('show');
+            menu.classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(event) {
+            const settingsMenu = document.getElementById('settingsMenu');
+            const settingsBtn = document.getElementById('settingsBtn');
+            const burgerMenu = document.getElementById('burgerMenu');
+            const burgerBtn = document.getElementById('menuBtn');
+            
+            if (!settingsMenu.contains(event.target) && event.target !== settingsBtn) {
+                settingsMenu.classList.remove('show');
+            }
+            if (!burgerMenu.contains(event.target) && event.target !== burgerBtn) {
+                burgerMenu.classList.remove('show');
+            }
+        });
+
+        function changeLang() {
+            const lang = document.getElementById('langSelect').value;
+            localStorage.setItem('userLang', lang);
+            alert(lang === 'en' ? 'Язык изменен на English!' : 'Язык изменен на Русский!');
+        }
+
+        function changePay() {
+            const pay = document.getElementById('paySelect').value;
+            localStorage.setItem('userPay', pay);
+            let text = pay === 'card' ? 'Банковская карта' : (pay === 'sbp' ? 'СБП' : 'Наличные');
+            alert('Способ оплаты изменен на: ' + text);
+        }
+
+        window.onload = function() {
+            const savedLang = localStorage.getItem('userLang');
+            const savedPay = localStorage.getItem('userPay');
+            if (savedLang) document.getElementById('langSelect').value = savedLang;
+            if (savedPay) document.getElementById('paySelect').value = savedPay;
+        };
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Ищем все иконки пользователя в шапке
+        const userIcons = document.querySelectorAll('a[href="vxod.html"]');
+        
+        // Проверяем, есть ли сохраненный токен (значит, человек вошел)
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+            // Если вошел, меняем ссылку у всех иконок на profile.html
+            userIcons.forEach(icon => {
+                icon.href = 'profile.html';
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

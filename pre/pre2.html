@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLDANCE - Надюха Лучшая</title>
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kurale&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- Иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* базовый сброс */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Убираем скролл, страница на весь экран */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            /* Цвет фона как на скриншоте (тёмно-оливковый) */
+            background-color: #5A4B00; 
+            color: #fff;
+            position: relative;
+        }
+
+        /* шапка сайта */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 400;
+            font-family: 'Kurale', serif;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #FCC402;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .header-icons i {
+            cursor: pointer;
+            transition: transform 0.2s, color 0.3s;
+        }
+
+        .header-icons i:hover {
+            transform: scale(1.1);
+            color: #FCC402;
+        }
+
+        /* Основной контейнер */
+        .main-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* Жёлтый овал на фоне */
+        .yellow-oval {
+            position: absolute;
+            top: 50%;
+            left: 55%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 85vh;
+            background-color: #FCC402;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Фото преподавателя слева */
+        .teacher-image {
+            position: absolute;
+            left: 2%;
+            bottom: 0;
+            height: 90vh;
+            width: auto;
+            z-index: 2;
+            pointer-events: none;
+            /* Тень для объёма */
+            filter: drop-shadow(10px 10px 20px rgba(0,0,0,0.3));
+        }
+
+        /* Блок с текстом (имя, стиль) - правее и черный */
+        .teacher-title-block {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            z-index: 3;
+            text-shadow: none; 
+        }
+
+        .teacher-title-block h1 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 80px;
+            line-height: 1.0;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            color: #111; 
+        }
+
+        .teacher-title-block h2 {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 60px;
+            line-height: 1.0;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #111;
+        }
+
+        .teacher-title-block .experience {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 45px;
+            text-transform: uppercase;
+            color: #111; 
+        }
+
+        /* Блок с описанием - черный */
+        .teacher-description {
+            position: absolute;
+            top: 38%;
+            right: 10%;
+            width: 35%;
+            text-align: right;
+            z-index: 3;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 32px;
+            line-height: 1.2;
+            color: #111; 
+            text-shadow: none; 
+        }
+
+        /* Контейнер для видео-блоков */
+        .video-grid {
+            position: absolute;
+            bottom: 10%;
+            left: 45%;
+            width: 50%;
+            height: 40%;
+            z-index: 4;
+            display: grid;
+            grid-template-columns: 1fr 1fr; 
+            grid-template-rows: 1fr 1fr;    
+            gap: 30px;
+            padding-left: 5%;
+        }
+
+        /* Чёрный блок с видео */
+        .video-block {
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 40px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .video-block:hover {
+            background-color: #1a1a1a;
+            transform: scale(1.02);
+        }
+
+        /* Расположение блоков */
+        .video-block:nth-child(1) {
+            grid-column: 1 / 2;
+            grid-row: 1 / 2;
+            width: 80%;
+            justify-self: end;
+        }
+        .video-block:nth-child(2) {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            width: 90%;
+            justify-self: start;
+        }
+        .video-block:nth-child(3) {
+            grid-column: 1 / 3;
+            grid-row: 2 / 3;
+            width: 60%;
+            justify-self: center;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .teacher-title-block h1 { font-size: 50px; }
+            .teacher-title-block h2 { font-size: 40px; }
+            .teacher-title-block .experience { font-size: 30px; }
+            .teacher-description { font-size: 20px; width: 40%; top: 35%; }
+            .video-block { font-size: 24px; }
+            .teacher-image { height: 70vh; left: 0; }
+            .teacher-title-block { left: 45%; }
+        }
+
+        @media (max-width: 768px) {
+            html, body { overflow-y: auto; overflow-x: hidden; }
+            header { padding: 15px 20px; }
+            nav { display: none; }
+            
+            .main-container { height: auto; padding-bottom: 50px; }
+            
+            .yellow-oval {
+                position: relative;
+                top: 0;
+                left: 0;
+                transform: none;
+                width: 150vw;
+                height: 80vh;
+                margin-left: -25vw;
+                margin-top: -10vh;
+            }
+
+            .teacher-image {
+                position: relative;
+                left: 50%;
+                transform: translateX(-50%);
+                height: 60vh;
+                bottom: auto;
+                margin-top: -30vh;
+                display: block;
+            }
+
+            .teacher-title-block {
+                position: relative;
+                top: auto;
+                left: auto;
+                text-align: center;
+                margin-top: 20px;
+                padding: 0 20px;
+            }
+
+            .teacher-title-block h1 { font-size: 40px; }
+            .teacher-title-block h2 { font-size: 30px; }
+            .teacher-title-block .experience { font-size: 24px; }
+
+            .teacher-description {
+                position: relative;
+                top: auto;
+                right: auto;
+                width: 90%;
+                margin: 20px auto;
+                text-align: center;
+                font-size: 20px;
+            }
+
+            .video-grid {
+                position: relative;
+                bottom: auto;
+                left: auto;
+                width: 90%;
+                height: auto;
+                margin: 20px auto;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                padding: 0;
+            }
+
+            .video-block {
+                width: 100% !important;
+                height: 100px;
+                font-size: 24px;
+            }
+        }
+                /* --- Стили для меню настроек --- */
+        .settings-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-dropdown {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            top: 35px; /* Сдвиг вниз от иконки */
+            right: -10px;
+            background-color: #222;
+            border: 1px solid #FDC201;
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+        }
+
+        /* Показываем меню при добавлении класса */
+        .settings-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        @keyframes fadeInSettings {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-dropdown h4 {
+            color: #FDC201;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .settings-dropdown select {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .settings-dropdown select:focus {
+            border-color: #FDC201;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка -->
+    <header>
+        <img src="logo.png" alt="GOLDANCE" class="logo-img">
+        
+        <nav>
+            <ul>
+                <li><a href="osnova.html">Главная</a></li>
+                <li><a href="style.html">Стили танца</a></li>
+                <li><a href="pre.html">Преподаватели</a></li>
+                <li><a href="events.html">События</a></li> <!-- Страница событий -->
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+        </nav>
+
+                    <div class="header-icons">
+                <a href="#" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-envelope"></i></a>
+                
+                <!-- Обертка для настроек -->
+                <div class="settings-wrapper">
+                    <i class="fa-solid fa-gear" id="settingsBtn" onclick="toggleSettings(event)"></i>
+                    
+                    <!-- Выпадающее меню -->
+                    <div class="settings-dropdown" id="settingsMenu">
+                        <h4><i class="fa-solid fa-globe"></i> Язык</h4>
+                        <select id="langSelect" onchange="changeLang()">
+                            <option value="ru">Русский</option>
+                            <option value="en">English</option>
+                        </select>
+
+                        <h4 style="margin-top: 15px;"><i class="fa-solid fa-credit-card"></i> Оплата</h4>
+                        <select id="paySelect" onchange="changePay()">
+                            <option value="card">Банковская карта</option>
+                            <option value="sbp">СБП</option>
+                            <option value="cash">Наличные</option>
+                        </select>
+                    </div>
+                </div>
+
+                <a href="vxod.html" style="color: inherit; text-decoration: none;"><i class="fa-regular fa-user"></i></a>
+                <a href="#" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-bars"></i></a>
+            </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main-container">
+        
+        <!-- Желтый фон -->
+        <div class="yellow-oval"></div>
+
+        <!-- Фото преподавателя (ЗАМЕНИТЕ НА pre2.png) -->
+        <img src="pre2.png" alt="Надюха Лучшая" class="teacher-image">
+
+        <!-- Имя и стиль -->
+        <div class="teacher-title-block">
+            <h1>Надюха Лучшая</h1>
+            <h2>Breakdance/Krump</h2>
+            <div class="experience">Стаж 12 лет</div>
+        </div>
+
+        <!-- Описание -->
+        <div class="teacher-description">
+            Абсолютная чемпионка в брейк-дансе. Её взрывная энергия и сложнейшие акробатические трюки завораживают с первой секунды.
+        </div>
+
+        <!-- Видео блоки -->
+        <div class="video-grid">
+            <div class="video-block">Видео</div>
+            <div class="video-block">Видео</div>
+            <div class="video-block">Видео</div>
+        </div>
+
+    </main>
+
+</body>
+    <script>
+        // Открытие/закрытие меню настроек
+        function toggleSettings(event) {
+            // Останавливаем всплытие клика, чтобы меню сразу не закрывалось
+            event.stopPropagation(); 
+            const menu = document.getElementById('settingsMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Закрытие меню при клике в любом другом месте страницы
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('settingsMenu');
+            const btn = document.getElementById('settingsBtn');
+            // Если кликнули не по меню и не по кнопке — закрываем
+            if (!menu.contains(event.target) && event.target !== btn) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Смена языка
+        function changeLang() {
+            const lang = document.getElementById('langSelect').value;
+            localStorage.setItem('userLang', lang);
+            if (lang === 'en') {
+                alert('Язык изменен на English! (Language changed to English)');
+            } else {
+                alert('Язык изменен на Русский!');
+            }
+        }
+
+        // Смена способа оплаты
+        function changePay() {
+            const pay = document.getElementById('paySelect').value;
+            localStorage.setItem('userPay', pay);
+            let text = '';
+            if (pay === 'card') text = 'Банковская карта';
+            if (pay === 'sbp') text = 'СБП (Система быстрых платежей)';
+            if (pay === 'cash') text = 'Наличные';
+            alert('Способ оплаты изменен на: ' + text);
+        }
+
+        // При загрузке страницы восстанавливаем сохраненные настройки
+        window.onload = function() {
+            const savedLang = localStorage.getItem('userLang');
+            const savedPay = localStorage.getItem('userPay');
+            
+            if (savedLang) document.getElementById('langSelect').value = savedLang;
+            if (savedPay) document.getElementById('paySelect').value = savedPay;
+        };
+    </script>
+</html>

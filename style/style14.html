@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLDANCE - Electro</title>
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kurale&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- Иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- Сброс и базовые стили --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; overflow: hidden; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #36361B; color: #fff; position: relative; }
+
+        /* --- Шапка --- */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; width: 100%; position: relative; z-index: 100; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav ul li a { text-decoration: none; color: #fff; font-size: 20px; font-weight: 400; font-family: 'Kurale', serif; transition: color 0.3s; }
+        nav ul li a:hover { color: #FCC402; }
+        .header-icons { display: flex; gap: 20px; font-size: 18px; color: #fff; }
+        .header-icons i { cursor: pointer; transition: transform 0.2s, color 0.3s; }
+        .header-icons i:hover { transform: scale(1.1); color: #FCC402; }
+
+        /* --- Звезда --- */
+        .star-wrapper { position: fixed; top: 50%; left: 78%; transform: translate(-50%, -50%); width: 160vh; height: 148vh; z-index: 1; pointer-events: none; }
+        .star { width: 100%; height: 100%; background-color: #FCC402; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+
+        /* --- Левая колонка с видео --- */
+        .left-column { position: fixed; left: 50px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 25px; width: 260px; z-index: 10; }
+        .video-box { background-color: #000; height: 160px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; font-weight: 700; font-family: 'Poppins', sans-serif; border-radius: 4px; cursor: pointer; transition: transform 0.2s, background 0.3s; }
+        .video-box:hover { background-color: #1a1a1a; transform: scale(1.02); }
+
+        /* --- Танцор --- */
+        .dancer-img { position: fixed; top: 50%; left: 53%; transform: translate(-75%, -45%); height: 85vh; width: auto; z-index: 5; pointer-events: none; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.5)); }
+
+        /* --- Текстовый блок --- */
+        .text-block { position: fixed; top: 50%; left: 68%; transform: translateY(-50%); width: 32vw; max-width: 500px; z-index: 6; color: #111; }
+         .text-block h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 5.5vw;
+            font-weight: 700;
+            line-height: 0.9;
+            letter-spacing: -3px;
+            margin-bottom: 15px;
+            margin-left: -250px; /* Сдвигает только заголовок влево */
+            text-transform: uppercase;
+            color: #111;
+        }
+        .text-block p { font-family: 'Impact', 'Arial Black', sans-serif; font-size: 15px; line-height: 1.4; margin-bottom: 12px; font-weight: 400; letter-spacing: 0.5px; color: #111; }
+        .text-block p b { font-weight: 400; }
+
+        /* --- Адаптивность --- */
+        @media (max-width: 1400px) {
+            .star-wrapper { width: 130vh; height: 130vh; left: 65%; }
+            .text-block h1 { font-size: 110px; }
+            .text-block { width: 34vw; left: 62%; }
+            .dancer-img { height: 80vh; }
+        }
+        @media (max-width: 1200px) {
+            .star-wrapper { width: 120vh; height: 120vh; left: 68%; }
+            .text-block h1 { font-size: 90px; }
+            .text-block { width: 34vw; left: 65%; }
+            .text-block p { font-size: 13px; }
+            .dancer-img { height: 75vh; transform: translate(-75%, -45%); }
+        }
+        @media (max-width: 1024px) {
+            .left-column { width: 180px; left: 30px; }
+            .video-box { height: 120px; font-size: 20px; }
+            .star-wrapper { width: 110vh; height: 110vh; left: 72%; }
+            .text-block h1 { font-size: 70px; }
+            .text-block { width: 36vw; left: 68%; }
+            .text-block p { font-size: 11px; }
+            .dancer-img { height: 65vh; left: 48%; }
+        }
+        @media (max-width: 768px) {
+            html, body { overflow-y: auto; }
+            .star-wrapper { position: relative; top: auto; left: auto; transform: none; width: 120vw; height: 120vw; margin: -20vw auto 0 auto; }
+            .left-column { position: relative; top: auto; left: auto; transform: none; width: 90%; margin: 20px auto; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            .video-box { width: 45%; height: 100px; font-size: 16px; }
+            .dancer-img { position: relative; top: auto; left: 50%; transform: translateX(-50%); height: 50vh; margin-top: -100px; display: block; }
+            .text-block { position: relative; top: auto; left: auto; transform: none; width: 90%; margin: -20vh auto 40px auto; text-align: left; }
+            .text-block h1 { font-size: 60px; text-align: center; }
+            .text-block p { font-size: 13px; }
+        }        /* --- Стили для меню настроек --- */
+        .settings-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-dropdown {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            top: 35px; /* Сдвиг вниз от иконки */
+            right: -10px;
+            background-color: #222;
+            border: 1px solid #FDC201;
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+        }
+
+        /* Показываем меню при добавлении класса */
+        .settings-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        @keyframes fadeInSettings {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-dropdown h4 {
+            color: #FDC201;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .settings-dropdown select {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .settings-dropdown select:focus {
+            border-color: #FDC201;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.png" alt="GOLDANCE" class="logo-img">
+        <nav>
+            <ul>
+               <li><a href="osnova.html">Главная</a></li>
+                <li><a href="style.html">Стили танца</a></li>
+                <li><a href="pre.html">Преподаватели</a></li>
+                <li><a href="events.html">События</a></li> <!-- Страница событий -->
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+        </nav>
+                    <div class="header-icons">
+                <a href="#" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-envelope"></i></a>
+                
+                <!-- Обертка для настроек -->
+                <div class="settings-wrapper">
+                    <i class="fa-solid fa-gear" id="settingsBtn" onclick="toggleSettings(event)"></i>
+                    
+                    <!-- Выпадающее меню -->
+                    <div class="settings-dropdown" id="settingsMenu">
+                        <h4><i class="fa-solid fa-globe"></i> Язык</h4>
+                        <select id="langSelect" onchange="changeLang()">
+                            <option value="ru">Русский</option>
+                            <option value="en">English</option>
+                        </select>
+
+                        <h4 style="margin-top: 15px;"><i class="fa-solid fa-credit-card"></i> Оплата</h4>
+                        <select id="paySelect" onchange="changePay()">
+                            <option value="card">Банковская карта</option>
+                            <option value="sbp">СБП</option>
+                            <option value="cash">Наличные</option>
+                        </select>
+                    </div>
+                </div>
+
+                <a href="vxod.html" style="color: inherit; text-decoration: none;"><i class="fa-regular fa-user"></i></a>
+                <a href="#" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-bars"></i></a>
+            </div>
+    </header>
+
+    <div class="star-wrapper">
+        <div class="star"></div>
+    </div>
+
+    <div class="left-column">
+        <div class="video-box">Видео</div>
+        <div class="video-box">Видео</div>
+        <div class="video-box">Видео</div>
+    </div>
+
+    <!-- ЗАМЕНИТЕ КАРТИНКУ -->
+    <img src="electro.png" alt="Dancer" class="dancer-img">
+
+    <!-- ВСТАВЬТЕ БЛОК ТЕКСТА -->
+    <div class="text-block">
+        <h1>Electro</h1>
+<p>Электро (Electro Dance) — это стиль из 80-х, который часто называют «Тектоник». Характеризуется резкими, роботизированными движениями, волнами и сложной работой рук.</p>
+<p><b>Характер и энергетика:</b><br>Это футуристичный, энергичный и очень динамичный стиль. Электро танцуют под электронную музыку (техно, хаус, электро). Движения быстрые, резкие и синхронные.</p>
+<p><b>Особенности:</b><br>Ключевые элементы: «тектоник» (жесткие движения руками), «вейвинг» (волны телом), «робот» и «кинг-тат» (работа ногами). Электро часто танцуют в командах и на баттлах.</p>
+<p>В целом, электро — это про энергию и технику.</p>
+</div>
+
+</body>
+    <script>
+        // Открытие/закрытие меню настроек
+        function toggleSettings(event) {
+            // Останавливаем всплытие клика, чтобы меню сразу не закрывалось
+            event.stopPropagation(); 
+            const menu = document.getElementById('settingsMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Закрытие меню при клике в любом другом месте страницы
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('settingsMenu');
+            const btn = document.getElementById('settingsBtn');
+            // Если кликнули не по меню и не по кнопке — закрываем
+            if (!menu.contains(event.target) && event.target !== btn) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Смена языка
+        function changeLang() {
+            const lang = document.getElementById('langSelect').value;
+            localStorage.setItem('userLang', lang);
+            if (lang === 'en') {
+                alert('Язык изменен на English! (Language changed to English)');
+            } else {
+                alert('Язык изменен на Русский!');
+            }
+        }
+
+        // Смена способа оплаты
+        function changePay() {
+            const pay = document.getElementById('paySelect').value;
+            localStorage.setItem('userPay', pay);
+            let text = '';
+            if (pay === 'card') text = 'Банковская карта';
+            if (pay === 'sbp') text = 'СБП (Система быстрых платежей)';
+            if (pay === 'cash') text = 'Наличные';
+            alert('Способ оплаты изменен на: ' + text);
+        }
+
+        // При загрузке страницы восстанавливаем сохраненные настройки
+        window.onload = function() {
+            const savedLang = localStorage.getItem('userLang');
+            const savedPay = localStorage.getItem('userPay');
+            
+            if (savedLang) document.getElementById('langSelect').value = savedLang;
+            if (savedPay) document.getElementById('paySelect').value = savedPay;
+        };
+    </script>
+</html>

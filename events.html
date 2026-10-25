@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLDANCE - События</title>
+    
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kurale&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- Иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* базовый сброс */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #fff;
+            position: relative;
+            background-color: #3a3a1e;
+        }
+
+        /* --- ФОН (картинка с танцорами) --- */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* ВСТАВЛЕНА ВАША КАРТИНКА */
+            background-image: url('fonn.jpg'); 
+            background-size: cover;
+            background-position: center;
+            /* Немного затемняем фон, чтобы текст читался лучше */
+            filter: brightness(0.6); 
+            z-index: -1;
+        }
+
+        /* --- Шапка сайта --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            width: 100%;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 400;
+            font-family: 'Kurale', serif;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #FCC402;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .header-icons i {
+            cursor: pointer;
+            transition: transform 0.2s, color 0.3s;
+        }
+
+        .header-icons i:hover {
+            transform: scale(1.1);
+            color: #FCC402;
+        }
+
+        /* --- Заголовок страницы --- */
+        .page-title {
+            text-align: center;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 56px;
+            text-transform: uppercase;
+            color: #fff;
+            letter-spacing: 3px;
+            margin: 20px 0 50px 0;
+            /* ТЕНЬ УБРАНА */
+        }
+
+        .page-title span {
+            color: #FCC402;
+        }
+
+        /* --- Контейнер с полосами --- */
+        .events-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding: 0 0 80px 0;
+        }
+
+        /* --- Полупрозрачная полоса --- */
+        .event-row {
+            background-color: rgba(255, 255, 255, 0.15);
+            width: 100%;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* --- Карточка-афиша (ссылка) --- */
+        .poster-link {
+            display: block;
+            width: 23%;
+            max-width: 280px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .poster-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .poster-link img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* --- Адаптивность --- */
+        @media (max-width: 1200px) {
+            .page-title { font-size: 42px; }
+            .poster-link { width: 23%; }
+            .event-row { padding: 20px 30px; gap: 15px; }
+        }
+
+        @media (max-width: 900px) {
+            .event-row {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .poster-link { width: 45%; } 
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+            }
+            nav { display: none; }
+
+            .page-title { font-size: 28px; margin-bottom: 30px; }
+            
+            .event-row {
+                flex-direction: column;
+                padding: 30px 20px;
+                gap: 25px;
+            }
+            .poster-link { width: 80%; max-width: 320px; }
+        }
+                /* --- Стили для меню настроек --- */
+        .settings-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-dropdown {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            top: 35px; /* Сдвиг вниз от иконки */
+            right: -10px;
+            background-color: #222;
+            border: 1px solid #FDC201;
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+        }
+
+        /* Показываем меню при добавлении класса */
+        .settings-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        @keyframes fadeInSettings {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-dropdown h4 {
+            color: #FDC201;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .settings-dropdown select {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .settings-dropdown select:focus {
+            border-color: #FDC201;
+        }
+                /* --- Стили для меню (бургер) --- */
+        .menu-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-dropdown {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            top: 35px;
+            right: -10px;
+            background-color: #222;
+            border: 1px solid #FCC402;
+            border-radius: 10px;
+            padding: 15px;
+            width: 250px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+            max-height: 80vh; /* Ограничение по высоте */
+            overflow-y: auto; /* Скролл, если не влезает */
+        }
+
+        .menu-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        .menu-dropdown h4 {
+            color: #FCC402;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-link {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 10px;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: background 0.3s, color 0.3s;
+            margin-bottom: 2px;
+        }
+
+        .menu-link:hover {
+            background-color: rgba(253, 194, 1, 0.2);
+            color: #FCC402;
+        }
+
+        .social-link i {
+            width: 20px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background-color: rgba(255,255,255,0.1);
+            margin: 15px 0;
+        }
+
+        /* Стилизация скроллбара для меню */
+        .menu-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+        .menu-dropdown::-webkit-scrollbar-track {
+            background: #222;
+        }
+        .menu-dropdown::-webkit-scrollbar-thumb {
+            background: #FCC402;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ФОН (картинка с танцорами) -->
+    <div class="bg-image"></div>
+
+    <!-- Шапка -->
+    <header>
+        <img src="logo.png" alt="GOLDANCE" class="logo-img">
+        
+        <nav>
+            <ul>
+                <li><a href="osnova.html">Главная</a></li>
+                <li><a href="style.html">Стили танца</a></li>
+                <li><a href="pre.html">Преподаватели</a></li>
+                <li><a href="events.html">События</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+        </nav>
+
+                 <div class="header-icons">
+            <a href="help.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-envelope"></i></a>
+            
+            <div class="settings-wrapper">
+                <i class="fa-solid fa-gear" id="settingsBtn" onclick="toggleSettings(event)"></i>
+                
+                <div class="settings-dropdown" id="settingsMenu">
+                    <h4><i class="fa-solid fa-globe"></i> Язык</h4>
+                    <select id="langSelect" onchange="changeLang()">
+                        <option value="ru">Русский</option>
+                        <option value="en">English</option>
+                    </select>
+
+                    <h4 style="margin-top: 15px;"><i class="fa-solid fa-credit-card"></i> Оплата</h4>
+                    <select id="paySelect" onchange="changePay()">
+                        <option value="card">Банковская карта</option>
+                        <option value="sbp">СБП</option>
+                        <option value="cash">Наличные</option>
+                    </select>
+                </div>
+            </div>
+
+            <a href="profile.html" style="color: inherit; text-decoration: none;"><i class="fa-regular fa-user"></i></a>
+            
+            <div class="menu-wrapper">
+                <i class="fa-solid fa-bars" id="menuBtn" onclick="toggleMenu(event)"></i>
+                
+                <div class="menu-dropdown" id="burgerMenu">
+                    <h4><i class="fa-solid fa-link"></i> Навигация</h4>
+                    <a href="osnova.html" class="menu-link">Главная</a>
+                    <a href="style.html" class="menu-link">Стили танца</a>
+                    <a href="pre.html" class="menu-link">Преподаватели</a>
+                    <a href="events.html" class="menu-link">События</a>
+                    <a href="about.html" class="menu-link">О нас</a>
+
+                    <div class="menu-divider"></div>
+
+                    <h4><i class="fa-solid fa-share-nodes"></i> Мы в соцсетях</h4>
+                    
+                    <a href="https://vk.com/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-vk" style="color: #0077FF;"></i> ВКонтакте
+                    </a>
+                    <a href="https://t.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-telegram" style="color: #229ED9;"></i> Telegram
+                    </a>
+                    <a href="https://wa.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp
+                    </a>
+                    <a href="mailto:info@goldance.ru" class="menu-link social-link">
+                        <i class="fa-solid fa-envelope" style="color: #FCC402;"></i> info@goldance.ru
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Заголовок -->
+    <h1 class="page-title">БЛИЖАЙШИЕ <span>СОБЫТИЯ</span></h1>
+
+    <!-- Контейнер с полосами и карточками -->
+    <div class="events-wrapper">
+        
+        <!-- ПЕРВАЯ ПОЛОСА -->
+        <div class="event-row">
+            <a href="https://vk.ru/freesidebattle" class="poster-link">
+                <img src="battle.jpg" alt="Событие 1">
+            </a>
+            <a href="https://vk.ru/ringbattle_nn" class="poster-link">
+                <img src="event2.jpg" alt="Событие 2">
+            </a>
+            <a href="https://vk.ru/distantflowbattle" class="poster-link">
+                <img src="event3.jpg" alt="Событие 3">
+            </a>
+            <a href="https://vk.ru/tothetopbattle" class="poster-link">
+                <img src="event4.jpg" alt="Событие 4">
+            </a>
+        </div>
+
+        <!-- ВТОРАЯ ПОЛОСА -->
+        <div class="event-row">
+            <a href="https://www.instagram.com/justedebout_moscow/" class="poster-link">
+                <img src="event6.jpg" alt="Событие 5">
+            </a>
+            <a href="https://vk.ru/soulouttabattle" class="poster-link">
+                <img src="event5.jpg" alt="Событие 6">
+            </a>
+            <a href="https://waackingsharing.ru/" class="poster-link">
+                <img src="event7.jpg" alt="Событие 7">
+            </a>
+            <a href="https://vk.ru/tothetopbattle" class="poster-link">
+                <img src="event8.jpg" alt="Событие 8">
+            </a>
+        </div>
+
+    </div>
+
+</body>
+    <script>
+        // Открытие/закрытие меню настроек
+        function toggleSettings(event) {
+            // Останавливаем всплытие клика, чтобы меню сразу не закрывалось
+            event.stopPropagation(); 
+            const menu = document.getElementById('settingsMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Закрытие меню при клике в любом другом месте страницы
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('settingsMenu');
+            const btn = document.getElementById('settingsBtn');
+            // Если кликнули не по меню и не по кнопке — закрываем
+            if (!menu.contains(event.target) && event.target !== btn) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Смена языка
+        function changeLang() {
+            const lang = document.getElementById('langSelect').value;
+            localStorage.setItem('userLang', lang);
+            if (lang === 'en') {
+                alert('Язык изменен на English! (Language changed to English)');
+            } else {
+                alert('Язык изменен на Русский!');
+            }
+        }
+
+        // Смена способа оплаты
+        function changePay() {
+            const pay = document.getElementById('paySelect').value;
+            localStorage.setItem('userPay', pay);
+            let text = '';
+            if (pay === 'card') text = 'Банковская карта';
+            if (pay === 'sbp') text = 'СБП (Система быстрых платежей)';
+            if (pay === 'cash') text = 'Наличные';
+            alert('Способ оплаты изменен на: ' + text);
+        }
+
+        // При загрузке страницы восстанавливаем сохраненные настройки
+        window.onload = function() {
+            const savedLang = localStorage.getItem('userLang');
+            const savedPay = localStorage.getItem('userPay');
+            
+            if (savedLang) document.getElementById('langSelect').value = savedLang;
+            if (savedPay) document.getElementById('paySelect').value = savedPay;
+        };
+                // Открытие/закрытие меню (бургер)
+        function toggleMenu(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('burgerMenu');
+            // Закрываем меню настроек, если оно открыто
+            document.getElementById('settingsMenu').classList.remove('show');
+            menu.classList.toggle('show');
+        }
+
+        // Закрытие меню при клике в любом другом месте
+        document.addEventListener('click', function(event) {
+            const burgerMenu = document.getElementById('burgerMenu');
+            const burgerBtn = document.getElementById('menuBtn');
+            
+            if (!burgerMenu.contains(event.target) && event.target !== burgerBtn) {
+                burgerMenu.classList.remove('show');
+            }
+        });
+
+        // В функции toggleSettings (для шестерёнки) нужно добавить закрытие меню бургера
+        function toggleSettings(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('settingsMenu');
+            // Закрываем меню бургера, если оно открыто
+            document.getElementById('burgerMenu').classList.remove('show');
+            menu.classList.toggle('show');
+        }
+    </script>
+</html>

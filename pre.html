@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLDANCE - Преподаватели</title>
+    
+    <!-- шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kurale&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* сброс отступов */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #9A7904;
+            color: #fff;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* шапка сайта */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            width: 100%;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        /* пункты меню */
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 400;
+            font-family: 'Kurale', serif;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #FFCC00;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .header-icons i {
+            cursor: pointer;
+            transition: transform 0.2s, color 0.3s;
+        }
+
+        .header-icons i:hover {
+            transform: scale(1.1);
+            color: #FFCC00;
+        }
+
+        /* заголовок с звёздами */
+        .page-header {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0 80px 0;
+            height: 160px;
+        }
+
+        /* сами звёзды по бокам */
+        .page-header::before,
+        .page-header::after {
+            content: '';
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            background-color: #36361B;
+            clip-path: polygon(
+                50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 
+                50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+            );
+            opacity: 1;
+            z-index: 1;
+            top: 50%;
+            transform: translateY(-50%) scaleX(1.3);
+        }
+
+        .page-header::before {
+            right: 50%;
+            margin-right: -40px;
+        }
+
+        .page-header::after {
+            left: 50%;
+            margin-left: -40px;
+        }
+
+        .page-title {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-size: 56px;
+            font-weight: 400;
+            text-transform: uppercase;
+            color: #fff;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 3px;
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        .page-title .yellow {
+            color: #FFCC00;
+        }
+
+        /* сетка с карточками */
+        .teachers-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 100px 120px; 
+            padding: 0 60px 150px 60px;
+            max-width: 1800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .teacher-card {
+            position: relative;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            overflow: visible; 
+        }
+
+        /* жёлтый овал — теперь это ссылка */
+        .oval {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 95%;
+            height: 260px;
+            background-color: #FFCC00;
+            border-radius: 50%;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            padding-left: 55%;
+            padding-right: 20px;
+            /* Делаем овал ссылкой */
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        /* эффект при наведении на овал */
+        .oval:hover {
+            transform: translateY(-50%) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .teacher-info {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            color: #36361B;
+            font-size: 24px;
+            line-height: 1.3;
+            letter-spacing: 0.5px;
+            text-align: left;
+        }
+
+        .teacher-info .name {
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        /* фото препода */
+        .teacher-photo {
+            position: absolute;
+            left: -50px;
+            bottom: 0;
+            height: 290px;
+            width: auto;
+            z-index: 3;
+            pointer-events: none;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+        }
+
+        /* планшеты */
+        @media (max-width: 1400px) {
+            .teachers-container { gap: 80px 80px; padding: 0 40px 100px 40px; }
+            .teacher-card { height: 280px; }
+            .oval { height: 230px; padding-left: 50%; }
+            .teacher-photo { height: 250px; left: -40px; } 
+            .teacher-info { font-size: 21px; }
+        }
+
+        @media (max-width: 1200px) {
+            .page-title { font-size: 42px; }
+            .page-header::before,
+            .page-header::after {
+                width: 220px;
+                height: 220px;
+            }
+            .teachers-container { gap: 60px 40px; padding: 0 30px 80px 30px; }
+            .teacher-card { height: 250px; }
+            .oval { height: 200px; padding-left: 52%; }
+            .teacher-photo { height: 220px; left: -30px; }
+            .teacher-info { font-size: 18px; }
+        }
+
+        @media (max-width: 900px) {
+            .teachers-container {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 0 30px 80px 30px;
+                gap: 60px 40px;
+            }
+            .teacher-card { height: 260px; }
+            .oval { height: 210px; padding-left: 50%; }
+            .teacher-photo { height: 230px; left: -30px; }
+            .teacher-info { font-size: 20px; }
+        }
+
+        /* телефоны */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+            }
+            nav { display: none; }
+
+            .page-title { font-size: 28px; padding: 0 20px; }
+            .page-header::before,
+            .page-header::after {
+                width: 150px;
+                height: 150px;
+            }
+
+            .teachers-container {
+                grid-template-columns: 1fr;
+                padding: 0 20px 60px 20px;
+                gap: 60px;
+            }
+
+            .teacher-card { height: 220px; }
+            .oval { height: 170px; padding-left: 50%; padding-right: 15px; }
+            .teacher-photo { height: 190px; left: 0; } 
+            .teacher-info { font-size: 16px; }
+        }
+
+        @media (max-width: 480px) {
+            .teacher-card { height: 190px; }
+            .oval { height: 150px; padding-left: 55%; padding-right: 10px; }
+            .teacher-photo { height: 170px; left: 0; }
+            .teacher-info { font-size: 14px; }
+        }
+                /* --- Стили для меню настроек --- */
+        .settings-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-dropdown {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            top: 35px; /* Сдвиг вниз от иконки */
+            right: -10px;
+            background-color: #222;
+            border: 1px solid #FDC201;
+            border-radius: 10px;
+            padding: 15px;
+            width: 220px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+        }
+
+        /* Показываем меню при добавлении класса */
+        .settings-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        @keyframes fadeInSettings {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-dropdown h4 {
+            color: #FDC201;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .settings-dropdown select {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .settings-dropdown select:focus {
+            border-color: #FDC201;
+        }        /* --- Стили для меню (бургер) --- */
+        .menu-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .menu-dropdown {
+            display: none; /* Скрыто по умолчанию */
+            position: absolute;
+            top: 35px;
+            right: -10px;
+            background-color: #222;
+            border: 1px solid #FCC402;
+            border-radius: 10px;
+            padding: 15px;
+            width: 250px;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            text-align: left;
+            max-height: 80vh; /* Ограничение по высоте */
+            overflow-y: auto; /* Скролл, если не влезает */
+        }
+
+        .menu-dropdown.show {
+            display: block;
+            animation: fadeInSettings 0.2s ease-out;
+        }
+
+        .menu-dropdown h4 {
+            color: #FCC402;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-link {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 10px;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: background 0.3s, color 0.3s;
+            margin-bottom: 2px;
+        }
+
+        .menu-link:hover {
+            background-color: rgba(253, 194, 1, 0.2);
+            color: #FCC402;
+        }
+
+        .social-link i {
+            width: 20px;
+            text-align: center;
+            margin-right: 8px;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background-color: rgba(255,255,255,0.1);
+            margin: 15px 0;
+        }
+
+        /* Стилизация скроллбара для меню */
+        .menu-dropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+        .menu-dropdown::-webkit-scrollbar-track {
+            background: #222;
+        }
+        .menu-dropdown::-webkit-scrollbar-thumb {
+            background: #FCC402;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- шапка -->
+    <header>
+        <img src="logo.png" alt="GOLDANCE" class="logo-img">
+        
+        <nav>
+            <ul>
+                <li><a href="osnova.html">Главная</a></li>
+                <li><a href="style.html">Стили танца</a></li>
+                <li><a href="pre.html">Преподаватели</a></li>
+                <li><a href="events.html">События</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+        </nav>
+
+                     <div class="header-icons">
+            <a href="help.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-envelope"></i></a>
+            
+            <div class="settings-wrapper">
+                <i class="fa-solid fa-gear" id="settingsBtn" onclick="toggleSettings(event)"></i>
+                
+                <div class="settings-dropdown" id="settingsMenu">
+                    <h4><i class="fa-solid fa-globe"></i> Язык</h4>
+                    <select id="langSelect" onchange="changeLang()">
+                        <option value="ru">Русский</option>
+                        <option value="en">English</option>
+                    </select>
+
+                    <h4 style="margin-top: 15px;"><i class="fa-solid fa-credit-card"></i> Оплата</h4>
+                    <select id="paySelect" onchange="changePay()">
+                        <option value="card">Банковская карта</option>
+                        <option value="sbp">СБП</option>
+                        <option value="cash">Наличные</option>
+                    </select>
+                </div>
+            </div>
+
+            <a href="profile.html" style="color: inherit; text-decoration: none;"><i class="fa-regular fa-user"></i></a>
+            
+            <div class="menu-wrapper">
+                <i class="fa-solid fa-bars" id="menuBtn" onclick="toggleMenu(event)"></i>
+                
+                <div class="menu-dropdown" id="burgerMenu">
+                    <h4><i class="fa-solid fa-link"></i> Навигация</h4>
+                    <a href="osnova.html" class="menu-link">Главная</a>
+                    <a href="style.html" class="menu-link">Стили танца</a>
+                    <a href="pre.html" class="menu-link">Преподаватели</a>
+                    <a href="events.html" class="menu-link">События</a>
+                    <a href="about.html" class="menu-link">О нас</a>
+
+                    <div class="menu-divider"></div>
+
+                    <h4><i class="fa-solid fa-share-nodes"></i> Мы в соцсетях</h4>
+                    
+                    <a href="https://vk.com/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-vk" style="color: #0077FF;"></i> ВКонтакте
+                    </a>
+                    <a href="https://t.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-telegram" style="color: #229ED9;"></i> Telegram
+                    </a>
+                    <a href="https://wa.me/" target="_blank" class="menu-link social-link">
+                        <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp
+                    </a>
+                    <a href="mailto:info@goldance.ru" class="menu-link social-link">
+                        <i class="fa-solid fa-envelope" style="color: #FCC402;"></i> info@goldance.ru
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- заголовок -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <span class="yellow">ПРО</span>ФЕССИОНАЛЬНЫЕ<br>ПЕДАГОГИ
+        </h1>
+    </div>
+
+    <!-- карточки преподов -->
+    <div class="teachers-container">
+        
+        <!-- Илья -->
+        <div class="teacher-card">
+            <img src="mardi.png" alt="Илья Крутой" class="teacher-photo">
+            <a href="teacher.html?id=ilya" class="oval">
+                <div class="teacher-info">
+                    <div class="name"> Максим Нгуен</div>
+                    <div>Hip-Hop/House</div>
+                    <div>Стаж 14 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Надя -->
+        <div class="teacher-card">
+            <img src="pre2.png" alt="Надюха Лучшая" class="teacher-photo">
+            <a href="teacher.html?id=nadya" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Надюха Лучшая</div>
+                    <div>Breakdance/Krump</div>
+                    <div>Стаж 12 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Оля -->
+        <div class="teacher-card">
+            <img src="contemp.png" alt="Оленька Нежная" class="teacher-photo">
+            <a href="teacher.html?id=olya" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Оленька Нежная</div>
+                    <div>Contemporary</div>
+                    <div>Стаж 10 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Алина -->
+        <div class="teacher-card">
+            <img src="prewa.png" alt="Алинка Элегантная" class="teacher-photo">
+            <a href="teacher.html?id=alina" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Алинка Элегантная</div>
+                    <div>Vogue/Waacking</div>
+                    <div>Стаж 11 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Арина -->
+        <div class="teacher-card">
+            <img src="pre5.png" alt="Арина Куликова" class="teacher-photo">
+            <a href="teacher.html?id=arina" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Арина Куликова</div>
+                    <div>Popping</div>
+                    <div>Стаж 8 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Саша -->
+        <div class="teacher-card">
+            <img src="pre6.png" alt="Саша Солнышко" class="teacher-photo">
+            <a href="teacher.html?id=sasha" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Саша Солнышко</div>
+                    <div>Jazz Funk</div>
+                    <div>Стаж 7 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Артём -->
+        <div class="teacher-card">
+            <img src="pre1.png" alt="Артём Стильный" class="teacher-photo">
+            <a href="teacher.html?id=artem" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Артём Стильный</div>
+                    <div>Hip-Hop/Choreo/House</div>
+                    <div>Стаж 10 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Соня -->
+        <div class="teacher-card">
+            <img src="precomp.png" alt="Соня Пластичная" class="teacher-photo">
+            <a href="teacher.html?id=sonya" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Соня Пластичная</div>
+                    <div>Contemporary/Choreo</div>
+                    <div>Стаж 9 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Олеся -->
+        <div class="teacher-card">
+            <img src="lockingpre.png" alt="Олеся Светлая" class="teacher-photo">
+            <a href="teacher.html?id=olesya" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Олеся Светлая</div>
+                    <div>Locking/Choreo</div>
+                    <div>Стаж 6 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Наталья -->
+        <div class="teacher-card">
+            <img src="voguepre.png" alt="Наталья Мафия" class="teacher-photo">
+            <a href="teacher.html?id=natalya" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Наталья Мафия</div>
+                    <div>Vogue</div>
+                    <div>Стаж 13 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Кира -->
+        <div class="teacher-card">
+            <img src="tuttipre.png" alt="Кира Искусная" class="teacher-photo">
+            <a href="teacher.html?id=kira" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Кира Искусная</div>
+                    <div>Tutting/Krump</div>
+                    <div>Стаж 7 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Милана -->
+        <div class="teacher-card">
+            <img src="pre4.png" alt="Милана Соблазн" class="teacher-photo">
+            <a href="teacher.html?id=milana" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Милана Соблазн</div>
+                    <div>Lady Dance</div>
+                    <div>Стаж 6 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Герман -->
+        <div class="teacher-card">
+            <img src="electropre.png" alt="Герман Рамазанов" class="teacher-photo">
+            <a href="teacher.html?id=german" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Герман Рамазанов</div>
+                    <div>Electro</div>
+                    <div>Стаж 5 лет</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Валя -->
+        <div class="teacher-card">
+            <img src="kizombapre.png" alt="Валя Зомба" class="teacher-photo">
+            <a href="teacher.html?id=valya" class="oval">
+                <div class="teacher-info">
+                    <div class="name">Валя Зомба</div>
+                    <div>Kizomba</div>
+                    <div>Стаж 5 лет</div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+</body>
+    <script>
+        // Открытие/закрытие меню настроек
+        function toggleSettings(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('settingsMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Закрытие меню при клике в любом другом месте страницы
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('settingsMenu');
+            const btn = document.getElementById('settingsBtn');
+            if (!menu.contains(event.target) && event.target !== btn) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Смена языка
+        function changeLang() {
+            const lang = document.getElementById('langSelect').value;
+            localStorage.setItem('userLang', lang);
+            if (lang === 'en') {
+                alert('Язык изменен на English! (Language changed to English)');
+            } else {
+                alert('Язык изменен на Русский!');
+            }
+        }
+
+        // Смена способа оплаты
+        function changePay() {
+            const pay = document.getElementById('paySelect').value;
+            localStorage.setItem('userPay', pay);
+            let text = '';
+            if (pay === 'card') text = 'Банковская карта';
+            if (pay === 'sbp') text = 'СБП (Система быстрых платежей)';
+            if (pay === 'cash') text = 'Наличные';
+            alert('Способ оплаты изменен на: ' + text);
+        }
+
+        // При загрузке страницы восстанавливаем сохраненные настройки
+        window.onload = function() {
+            const savedLang = localStorage.getItem('userLang');
+            const savedPay = localStorage.getItem('userPay');
+            
+            if (savedLang) document.getElementById('langSelect').value = savedLang;
+            if (savedPay) document.getElementById('paySelect').value = savedPay;
+        };        // Открытие/закрытие меню (бургер)
+        function toggleMenu(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('burgerMenu');
+            // Закрываем меню настроек, если оно открыто
+            document.getElementById('settingsMenu').classList.remove('show');
+            menu.classList.toggle('show');
+        }
+
+        // Закрытие меню при клике в любом другом месте
+        document.addEventListener('click', function(event) {
+            const burgerMenu = document.getElementById('burgerMenu');
+            const burgerBtn = document.getElementById('menuBtn');
+            
+            if (!burgerMenu.contains(event.target) && event.target !== burgerBtn) {
+                burgerMenu.classList.remove('show');
+            }
+        });
+
+        // В функции toggleSettings (для шестерёнки) нужно добавить закрытие меню бургера
+        function toggleSettings(event) {
+            event.stopPropagation(); 
+            const menu = document.getElementById('settingsMenu');
+            // Закрываем меню бургера, если оно открыто
+            document.getElementById('burgerMenu').classList.remove('show');
+            menu.classList.toggle('show');
+        }
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Ищем все иконки пользователя в шапке
+        const userIcons = document.querySelectorAll('a[href="vxod.html"]');
+        
+        // Проверяем, есть ли сохраненный токен (значит, человек вошел)
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+            // Если вошел, меняем ссылку у всех иконок на profile.html
+            userIcons.forEach(icon => {
+                icon.href = 'profile.html';
+            });
+        }
+    });
+</script>
+
+</html>
