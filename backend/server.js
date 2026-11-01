@@ -6,12 +6,15 @@ const { pool, initDB } = require('./db');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 80;
-const JWT_SECRET = process.env.jwtsecret;
+// Netrun сам подставит нужный порт. Если нет — используем 8080
+const PORT = process.env.PORT || 8080; 
+
+// Берем секретный ключ из переменной, которую мы создали в Netrun
+const JWT_SECRET = process.env.jwtsecret; 
 
 // --- ВОТ ТА САМАЯ СТРОЧКА, КОТОРАЯ ИСПРАВЛЕНА ---
 const path = require('path');
-app.use(express.static(__dirname)); // Теперь сервер ищет HTML-файлы в той же папке, где и сам
+app.use(express.static(__dirname)); 
 // ------------------------------------------------
 
 app.use(cors());
@@ -35,7 +38,7 @@ app.post('/api/auth/register', async (req, res) => {
       [email.toLowerCase(), hash, name || null, phone || null, role]
     );
     const user = result.rows[0];
-    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.jwtsecret, { expiresIn: '7d' });
 
     res.status(201).json({ token, user });
   } catch (err) {
@@ -55,7 +58,7 @@ app.post('/api/auth/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Неверный email или пароль' });
 
-    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.jwtsecret, { expiresIn: '7d' });
     res.json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role, avatar: user.avatar } });
   } catch (err) {
     console.error('Ошибка входа:', err);
@@ -70,7 +73,7 @@ app.get('/api/auth/me', async (req, res) => {
     if (!header || !header.startsWith('Bearer ')) return res.status(401).json({ error: 'Нет токена' });
     
     const token = header.split(' ')[1];
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.jwtsecret);
     
     const result = await pool.query(
       'SELECT id, email, name, phone, role, avatar FROM users WHERE id = $1', 
@@ -92,7 +95,7 @@ app.post('/api/users/avatar', async (req, res) => {
     if (!header || !header.startsWith('Bearer ')) return res.status(401).json({ error: 'Нет токена' });
     
     const token = header.split(' ')[1];
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.jwtsecret);
     const { avatar } = req.body; 
     
     await pool.query('UPDATE users SET avatar = $1 WHERE id = $2', [avatar, decoded.id]);
