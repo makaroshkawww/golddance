@@ -29,15 +29,15 @@ function changeLanguage() {
     const lang = document.getElementById('langSelect').value;
     localStorage.setItem('userLang', lang);
 
-    // Переводим все тексты
-    document.querySelectorAll('a, button, h1, h2, h3, p, li, span, option, .menu-link, .submit-btn, .menu-btn').forEach(element => {
+    // Переводим текст, НО НЕ ТРОГАЕМ ссылки и кнопки, чтобы они не ломались
+    document.querySelectorAll('h1, h2, h3, p, span, option, .menu-btn-text').forEach(element => {
         const text = element.textContent.trim();
         if (translations[lang] && translations[lang][text]) {
             element.textContent = translations[lang][text];
         }
     });
 
-    // Переводим плейсхолдеры в полях ввода
+    // Переводим плейсхолдеры (текст внутри полей ввода)
     document.querySelectorAll('input').forEach(input => {
         const placeholder = input.getAttribute('placeholder');
         if (placeholder && translations[lang] && translations[lang][placeholder]) {
@@ -46,8 +46,6 @@ function changeLanguage() {
     });
 
     document.documentElement.lang = lang;
-
-    // Красивое уведомление вместо alert
     showNotification(lang === 'en' ? 'Language changed to English!' : 'Язык изменен на Русский!');
 }
 
@@ -72,7 +70,6 @@ function showNotification(message) {
     }, 2500);
 }
 
-// Загружаем сохраненный язык
 window.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('userLang');
     if (savedLang && savedLang !== 'ru') {
