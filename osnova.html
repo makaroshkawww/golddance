@@ -498,6 +498,17 @@
             </div>
         </main>
     </div>
-
+<script src="translate.js"></script>
+<script>
+    function toggleSettings(event) { event.stopPropagation(); document.getElementById('burgerMenu').classList.remove('show'); document.getElementById('settingsMenu').classList.toggle('show'); }
+    function toggleMenu(event) { event.stopPropagation(); document.getElementById('settingsMenu').classList.remove('show'); document.getElementById('burgerMenu').classList.toggle('show'); }
+    document.addEventListener('click', function(event) {
+        const sm = document.getElementById('settingsMenu'); const sb = document.getElementById('settingsBtn');
+        const bm = document.getElementById('burgerMenu'); const bb = document.getElementById('menuBtn');
+        if (!sm.contains(event.target) && event.target !== sb) sm.classList.remove('show');
+        if (!bm.contains(event.target) && event.target !== bb) bm.classList.remove('show');
+    });
+    function changePay() { const pay = document.getElementById('paySelect').value; localStorage.setItem('userPay', pay); alert('Способ оплаты изменен!'); }
+</script>
 </body>
 </html>

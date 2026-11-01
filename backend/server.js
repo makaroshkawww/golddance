@@ -6,15 +6,16 @@ const { pool, initDB } = require('./db');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 80;
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Эти две строчки позволяют серверу показывать ваши HTML-файлы
+// --- ВОТ ТА САМАЯ СТРОЧКА, КОТОРАЯ ИСПРАВЛЕНА ---
 const path = require('path');
-app.use(express.static(path.join(__dirname, '..')));
+app.use(express.static(__dirname)); // Теперь сервер ищет HTML-файлы в той же папке, где и сам
+// ------------------------------------------------
 
 app.use(cors());
-app.use(express.json({ limit: '10mb' })); // Лимит для картинок
+app.use(express.json({ limit: '10mb' }));
 
 // РЕГИСТРАЦИЯ
 app.post('/api/auth/register', async (req, res) => {
