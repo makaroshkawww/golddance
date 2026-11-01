@@ -2,11 +2,12 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 const pool = new Pool({
-  connectionString: process.env.databaseurl,
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
 
 async function initDB() {
-  // Создаем таблицу, если её нет
+  // Таблица пользователей
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
@@ -19,11 +20,54 @@ async function initDB() {
       created_at TIMESTAMP DEFAULT NOW()
     );
   `);
-  
-  // Если таблица уже была, добавляем колонку для аватарки
   await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar TEXT;`);
-  
-  console.log('База данных готова');
+
+  // 1. Абонементы (Действующие)
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS subscriptions (
+      id SERIAL PRIMARY KEY,
+      user_email VARCHAR(255),
+      type VARCHAR(100),
+      style VARCHAR(100),
+      end_date DATE,
+      classes_left INT
+    );
+  `);
+
+  // 2. Покупки (История)
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS purchases (
+      id SERIAL PRIMARY KEY,
+      user_email VARCHAR(255),
+      item VARCHAR(255),
+      price INT,
+      purchase_date DATE DEFAULT CURRENT_DATE
+    );
+  `);
+
+  // 3. Посещения
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS visits (
+      id SERIAL PRIMARY KEY,
+      user_email VARCHAR(255),
+      visit_date DATE,
+      status VARCHAR(50)
+    );
+  `);
+
+  // 4. Записи на занятия
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS records (
+      id SERIAL PRIMARY KEY,
+      user_email VARCHAR(255),
+      day_name VARCHAR(50),
+      time VARCHAR(50),
+      style VARCHAR(100),
+      teacher VARCHAR(100)
+    );
+  `);
+
+  console.log('✅ Все таблицы готовы');
 }
 
 module.exports = { pool, initDB };

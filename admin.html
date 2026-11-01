@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOLDANCE - Админ-панель</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kurale&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; min-height: 100%; overflow-x: hidden; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #36361B; color: #fff; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; width: 100%; z-index: 100; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav ul li a { text-decoration: none; color: #fff; font-size: 18px; font-family: 'Kurale', serif; transition: color 0.3s; }
+        nav ul li a:hover { color: #FCC402; }
+        .header-icons { display: flex; gap: 20px; font-size: 18px; color: #fff; align-items: center; }
+        .header-icons i { cursor: pointer; transition: transform 0.2s; }
+        .header-icons i:hover { transform: scale(1.1); }
+        
+        .profile-container { width: 90%; max-width: 1200px; margin: 0 auto; padding-bottom: 50px; }
+        .page-title { text-align: center; font-family: 'Impact', 'Arial Black', sans-serif; font-size: 42px; text-transform: uppercase; background-color: #FCC402; color: #111; padding: 10px 40px; border-radius: 30px; width: fit-content; margin: 0 auto 20px auto; letter-spacing: 2px; }
+        
+        .user-card { background-color: #FCC402; border-radius: 50px; padding: 15px 30px; display: flex; align-items: center; gap: 20px; width: fit-content; margin: 0 auto 30px auto; min-width: 500px; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .avatar { width: 80px; height: 80px; border-radius: 50%; background-color: #fff; border: 3px solid #111; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #5A4B00; }
+        .user-info h2 { font-family: 'Impact', 'Arial Black', sans-serif; font-size: 24px; color: #111; letter-spacing: 1px; font-weight: 400; }
+
+        .menu-buttons { display: flex; justify-content: space-around; background-color: #FCC402; border-radius: 30px; padding: 15px 30px; margin-bottom: 20px; }
+        .menu-btn { background: transparent; border: none; color: #111; font-family: 'Impact', 'Arial Black', sans-serif; font-size: 22px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 15px; transition: background 0.3s, transform 0.2s; }
+        .menu-btn i { font-size: 18px; color: #111; }
+        .menu-btn:hover { background-color: rgba(0, 0, 0, 0.1); transform: translateY(-2px); }
+        .menu-btn.active { background-color: rgba(0, 0, 0, 0.15); }
+
+        .content-area { background-color: #FCC402; border-radius: 30px; padding: 30px; min-height: 400px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .info-box { display: none; background-color: rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 25px; color: #111; }
+        .info-box.active { display: block; }
+        .info-box h3 { font-family: 'Impact', 'Arial Black', sans-serif; font-size: 28px; margin-bottom: 15px; color: #111; border-bottom: 2px solid rgba(0,0,0,0.2); padding-bottom: 10px; }
+
+        .admin-form { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; background: rgba(0,0,0,0.05); padding: 20px; border-radius: 15px; }
+        .admin-form input, .admin-form select { padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.2); font-family: 'Poppins', sans-serif; font-size: 14px; outline: none; background: #fff; color: #111; }
+        .admin-form button { padding: 10px 25px; border-radius: 8px; border: none; background-color: #111; color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 700; cursor: pointer; transition: background 0.3s; }
+        .admin-form button:hover { background-color: #333; }
+
+        .data-list { list-style: none; }
+        .data-list li { background: rgba(255,255,255,0.3); padding: 15px 20px; border-radius: 10px; margin-bottom: 10px; font-family: 'Poppins', sans-serif; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .delete-btn { background: transparent; border: none; color: #d32f2f; font-size: 18px; cursor: pointer; }
+
+        @media (max-width: 900px) { .menu-buttons { flex-wrap: wrap; gap: 10px; border-radius: 20px; } .menu-btn { font-size: 18px; padding: 8px 15px; } .user-card { min-width: auto; width: 100%; } .admin-form { flex-direction: column; } }
+        @media (max-width: 768px) { header { padding: 15px 20px; flex-wrap: wrap; } nav { display: none; } .page-title { font-size: 30px; } .user-card { flex-direction: column; text-align: center; } .menu-buttons { flex-direction: column; } .menu-btn { justify-content: center; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="logo.png" alt="GOLDANCE" class="logo-img">
+        <nav>
+            <ul>
+                <li><a href="osnova.html">Главная</a></li>
+                <li><a href="style.html">Стили танца</a></li>
+                <li><a href="pre.html">Преподаватели</a></li>
+                <li><a href="events.html">События</a></li>
+                <li><a href="about.html">О нас</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="profile-container">
+        <div class="page-title">АДМИН-ПАНЕЛЬ</div>
+
+        <div class="user-card">
+            <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
+            <div class="user-info"><h2>Администратор</h2></div>
+        </div>
+
+        <div class="menu-buttons">
+            <button class="menu-btn active" onclick="showTab('abonement', this)"><i class="fa-solid fa-id-card"></i> Абонементы</button>
+            <button class="menu-btn" onclick="showTab('visits', this)"><i class="fa-solid fa-person-walking"></i> Посещения</button>
+            <button class="menu-btn" onclick="showTab('purchases', this)"><i class="fa-solid fa-cart-shopping"></i> Покупки</button>
+            <button class="menu-btn" onclick="showTab('records', this)"><i class="fa-solid fa-calendar-days"></i> Записи</button>
+        </div>
+
+        <div class="content-area">
+            
+            <!-- АБОНЕМЕНТЫ -->
+            <div id="abonement" class="info-box active">
+                <h3>Управление абонементами</h3>
+                <div class="admin-form">
+                    <input type="email" id="abon-email" placeholder="Email клиента">
+                    <select id="abon-type">
+                        <option value="Безлимитный">Безлимитный</option>
+                        <option value="8 занятий">8 занятий</option>
+                        <option value="4 занятия">4 занятия</option>
+                    </select>
+                    <input type="text" id="abon-style" placeholder="Стиль (Hip-Hop)">
+                    <input type="number" id="abon-left" placeholder="Осталось занятий">
+                    <input type="date" id="abon-date">
+                    <button onclick="addAbonement()">Добавить</button>
+                </div>
+                <ul class="data-list" id="abon-list"></ul>
+            </div>
+
+            <!-- ПОСЕЩЕНИЯ -->
+            <div id="visits" class="info-box">
+                <h3>Управление посещениями</h3>
+                <div class="admin-form">
+                    <input type="email" id="visit-email" placeholder="Email клиента">
+                    <input type="date" id="visit-date">
+                    <select id="visit-status">
+                        <option value="Посещено">Посещено</option>
+                        <option value="Пропущено">Пропущено</option>
+                    </select>
+                    <button onclick="addVisit()">Добавить</button>
+                </div>
+                <ul class="data-list" id="visit-list"></ul>
+            </div>
+
+            <!-- ПОКУПКИ -->
+            <div id="purchases" class="info-box">
+                <h3>Управление покупками</h3>
+                <div class="admin-form">
+                    <input type="email" id="purchase-email" placeholder="Email клиента">
+                    <input type="text" id="purchase-item" placeholder="Товар (Абонемент)">
+                    <input type="number" id="purchase-price" placeholder="Цена (₽)">
+                    <button onclick="addPurchase()">Добавить</button>
+                </div>
+                <ul class="data-list" id="purchase-list"></ul>
+            </div>
+
+            <!-- ЗАПИСИ -->
+            <div id="records" class="info-box">
+                <h3>Управление записями</h3>
+                <div class="admin-form">
+                    <input type="email" id="record-email" placeholder="Email клиента">
+                    <input type="text" id="record-day" placeholder="День (Понедельник)">
+                    <input type="time" id="record-time">
+                    <input type="text" id="record-style" placeholder="Стиль (Hip-Hop)">
+                    <input type="text" id="record-teacher" placeholder="Преподаватель">
+                    <button onclick="addRecord()">Добавить</button>
+                </div>
+                <ul class="data-list" id="record-list"></ul>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ЗАМЕНИТЕ НА ВАШ ДОМЕН AMVERA
+        const API_URL = 'https://goldance-db-makaroshkawww.msk1.amvera.tech';
+
+        function showTab(tabId, btn) {
+            document.querySelectorAll('.info-box').forEach(box => box.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        // Загрузка данных при старте
+        window.addEventListener('DOMContentLoaded', () => {
+            loadAbonements();
+            loadVisits();
+            loadPurchases();
+            loadRecords();
+        });
+
+        // --- АБОНЕМЕНТЫ ---
+        async function loadAbonements() {
+            const res = await fetch(`${API_URL}/api/admin/subscriptions`);
+            const data = await res.json();
+            document.getElementById('abon-list').innerHTML = data.map(item => `
+                <li>
+                    <span><b>${item.user_email}</b> — ${item.type} (${item.style}) до ${item.end_date}. Осталось: ${item.classes_left}</span>
+                    <button class="delete-btn" onclick="deleteItem('subscriptions', ${item.id})"><i class="fa-solid fa-trash"></i></button>
+                </li>
+            `).join('');
+        }
+        async function addAbonement() {
+            const email = document.getElementById('abon-email').value;
+            const type = document.getElementById('abon-type').value;
+            const style = document.getElementById('abon-style').value;
+            const left = document.getElementById('abon-left').value;
+            const date = document.getElementById('abon-date').value;
+            if (!email || !style || !date || !left) return alert('Заполните все поля!');
+            
+            await fetch(`${API_URL}/api/admin/subscriptions`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email, type, style, end_date: date, classes_left: left })
+            });
+            loadAbonements();
+        }
+
+        // --- ПОСЕЩЕНИЯ ---
+        async function loadVisits() {
+            const res = await fetch(`${API_URL}/api/admin/visits`);
+            const data = await res.json();
+            document.getElementById('visit-list').innerHTML = data.map(item => `
+                <li>
+                    <span>${item.visit_date} — <b>${item.user_email}</b> (${item.status})</span>
+                    <button class="delete-btn" onclick="deleteItem('visits', ${item.id})"><i class="fa-solid fa-trash"></i></button>
+                </li>
+            `).join('');
+        }
+        async function addVisit() {
+            const email = document.getElementById('visit-email').value;
+            const date = document.getElementById('visit-date').value;
+            const status = document.getElementById('visit-status').value;
+            if (!email || !date) return alert('Заполните поля!');
+            
+            await fetch(`${API_URL}/api/admin/visits`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email, date, status })
+            });
+            loadVisits();
+            loadAbonements(); // Обновить абонементы (там списывается занятие)
+        }
+
+        // --- ПОКУПКИ ---
+        async function loadPurchases() {
+            const res = await fetch(`${API_URL}/api/admin/purchases`);
+            const data = await res.json();
+            document.getElementById('purchase-list').innerHTML = data.map(item => `
+                <li>
+                    <span><b>${item.user_email}</b> — ${item.item} (${item.price} ₽) от ${item.purchase_date}</span>
+                    <button class="delete-btn" onclick="deleteItem('purchases', ${item.id})"><i class="fa-solid fa-trash"></i></button>
+                </li>
+            `).join('');
+        }
+        async function addPurchase() {
+            const email = document.getElementById('purchase-email').value;
+            const item = document.getElementById('purchase-item').value;
+            const price = document.getElementById('purchase-price').value;
+            if (!email || !item || !price) return alert('Заполните поля!');
+            
+            await fetch(`${API_URL}/api/admin/purchases`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email, item, price })
+            });
+            loadPurchases();
+        }
+
+        // --- ЗАПИСИ ---
+        async function loadRecords() {
+            const res = await fetch(`${API_URL}/api/admin/records`);
+            const data = await res.json();
+            document.getElementById('record-list').innerHTML = data.map(item => `
+                <li>
+                    <span><b>${item.day_name}, ${item.time}</b> — ${item.style} (${item.teacher}) для ${item.user_email}</span>
+                    <button class="delete-btn" onclick="deleteItem('records', ${item.id})"><i class="fa-solid fa-trash"></i></button>
+                </li>
+            `).join('');
+        }
+        async function addRecord() {
+            const email = document.getElementById('record-email').value;
+            const day = document.getElementById('record-day').value;
+            const time = document.getElementById('record-time').value;
+            const style = document.getElementById('record-style').value;
+            const teacher = document.getElementById('record-teacher').value;
+            if (!email || !day || !time || !style || !teacher) return alert('Заполните все поля!');
+            
+            await fetch(`${API_URL}/api/admin/records`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email, day_name: day, time, style, teacher })
+            });
+            loadRecords();
+        }
+
+        // --- УДАЛЕНИЕ ---
+        async function deleteItem(type, id) {
+            if (!confirm('Удалить эту запись?')) return;
+            await fetch(`${API_URL}/api/admin/${type}/${id}`, { method: 'DELETE' });
+            if (type === 'subscriptions') loadAbonements();
+            if (type === 'visits') loadVisits();
+            if (type === 'purchases') loadPurchases();
+            if (type === 'records') loadRecords();
+        }
+    </script>
+</body>
+</html>

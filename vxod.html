@@ -8,13 +8,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; height: 100vh; overflow: hidden; color: white; position: relative; background-color: #000; }
         .bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; filter: grayscale(100%) contrast(1.2) brightness(0.6); pointer-events: none; }
         .main-container { width: 100%; height: 100%; display: flex; flex-direction: column; position: relative; z-index: 2; }
-        
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; width: 100%; z-index: 10; }
         .logo-img { height: 50px; width: auto; object-fit: contain; }
         nav ul { display: flex; list-style: none; gap: 30px; }
@@ -23,15 +21,13 @@
         .header-icons { display: flex; gap: 20px; font-size: 18px; color: #FDC201; align-items: center; }
         .header-icons i { cursor: pointer; transition: transform 0.2s; }
         .header-icons i:hover { transform: scale(1.1); }
-
         .settings-wrapper { position: relative; display: inline-block; }
         .settings-dropdown { display: none; position: absolute; top: 35px; right: -10px; background-color: #222; border: 1px solid #FDC201; border-radius: 10px; padding: 15px; width: 220px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: left; }
         .settings-dropdown.show { display: block; animation: fadeInSettings 0.2s ease-out; }
         @keyframes fadeInSettings { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .settings-dropdown h4 { color: #FDC201; font-size: 14px; margin-bottom: 5px; font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
-        .settings-dropdown select { width: 100%; padding: 8px; background-color: #333; color: #fff; border: 1px solid #444; border-radius: 5px; font-family: 'Montserrat', sans-serif; cursor: pointer; outline: none; }
+        .settings-dropdown h4 { color: #FDC201; font-size: 14px; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .settings-dropdown select { width: 100%; padding: 8px; background-color: #333; color: #fff; border: 1px solid #444; border-radius: 5px; cursor: pointer; outline: none; }
         .settings-dropdown select:focus { border-color: #FDC201; }
-
         .login-section { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
         .login-card { background: rgba(253, 194, 1, 0.75); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); width: 600px; padding: 60px 80px; border-radius: 60px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
         .login-title { font-size: 48px; font-weight: 700; color: #111; margin-bottom: 30px; letter-spacing: 1px; }
@@ -42,21 +38,13 @@
         .submit-btn:hover { background-color: #333; transform: translateY(-2px); }
         .register-link { display: block; margin-top: 15px; color: #111; font-size: 14px; text-decoration: none; font-weight: 600; transition: opacity 0.3s; }
         .register-link:hover { opacity: 0.7; text-decoration: underline; }
-        
         .error-msg { color: #d80000; font-weight: 700; font-size: 14px; margin-top: 10px; display: none; }
-
-        @media (max-width: 768px) {
-            header { padding: 15px 20px; flex-wrap: wrap; }
-            nav { display: none; }
-            .login-card { width: 90%; padding: 40px 30px; border-radius: 40px; }
-            .login-title { font-size: 32px; }
-        }
-        
+        @media (max-width: 768px) { header { padding: 15px 20px; flex-wrap: wrap; } nav { display: none; } .login-card { width: 90%; padding: 40px 30px; border-radius: 40px; } .login-title { font-size: 32px; } }
         .menu-wrapper { position: relative; display: inline-block; }
         .menu-dropdown { display: none; position: absolute; top: 35px; right: -10px; background-color: #222; border: 1px solid #FCC402; border-radius: 10px; padding: 15px; width: 250px; z-index: 1000; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: left; max-height: 80vh; overflow-y: auto; }
         .menu-dropdown.show { display: block; animation: fadeInSettings 0.2s ease-out; }
-        .menu-dropdown h4 { color: #FCC402; font-size: 14px; margin-bottom: 10px; font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
-        .menu-link { display: block; color: #fff; text-decoration: none; padding: 8px 10px; border-radius: 5px; font-family: 'Montserrat', sans-serif; font-size: 14px; transition: background 0.3s, color 0.3s; margin-bottom: 2px; }
+        .menu-dropdown h4 { color: #FCC402; font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .menu-link { display: block; color: #fff; text-decoration: none; padding: 8px 10px; border-radius: 5px; font-size: 14px; transition: background 0.3s, color 0.3s; margin-bottom: 2px; }
         .menu-link:hover { background-color: rgba(253, 194, 1, 0.2); color: #FCC402; }
         .social-link i { width: 20px; text-align: center; margin-right: 8px; }
         .menu-divider { height: 1px; background-color: rgba(255,255,255,0.1); margin: 15px 0; }
@@ -66,10 +54,7 @@
     </style>
 </head>
 <body>
-    <video class="bg-video" autoplay loop muted playsinline>
-        <source src="videoo.mp4" type="video/mp4">
-    </video>
-
+    <video class="bg-video" autoplay loop muted playsinline><source src="videoo.mp4" type="video/mp4"></video>
     <div class="main-container">
         <header>
             <img src="logo.png" alt="GOLDANCE Logo" class="logo-img">
@@ -82,14 +67,13 @@
                     <li><a href="about.html">О нас</a></li>
                 </ul>
             </nav>
-
             <div class="header-icons">
                 <a href="help.html" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-envelope"></i></a>
                 <div class="settings-wrapper">
                     <i class="fa-solid fa-gear" id="settingsBtn" onclick="toggleSettings(event)"></i>
                     <div class="settings-dropdown" id="settingsMenu">
                         <h4><i class="fa-solid fa-globe"></i> Язык</h4>
-                        <select id="langSelect" onchange="changeLang()">
+                        <select id="langSelect" onchange="changeLanguage()">
                             <option value="ru">Русский</option>
                             <option value="en">English</option>
                         </select>
@@ -101,9 +85,7 @@
                         </select>
                     </div>
                 </div>
-
                 <a href="profile.html" style="color: inherit; text-decoration: none;"><i class="fa-regular fa-user"></i></a>
-                
                 <div class="menu-wrapper">
                     <i class="fa-solid fa-bars" id="menuBtn" onclick="toggleMenu(event)"></i>
                     <div class="menu-dropdown" id="burgerMenu">
@@ -123,14 +105,12 @@
                 </div>
             </div>
         </header>
-
         <main class="login-section">
             <div class="login-card">
                 <h2 class="login-title">Вход</h2>
                 <form class="login-form" action="#" method="POST" autocomplete="off">
                     <input type="text" class="input-field" placeholder="Логин (Email)" id="loginInput" required autocomplete="off">
                     <input type="password" class="input-field" placeholder="Пароль" id="passwordInput" required autocomplete="new-password">
-                    
                     <button type="submit" class="submit-btn">Войти</button>
                     <div id="errorMsg" class="error-msg"></div>
                     <a href="registr.html" class="register-link">Хочу зарегистрироваться</a>
@@ -138,28 +118,24 @@
             </div>
         </main>
     </div>
-
+    <script src="translate.js"></script>
     <script>
         document.querySelector('.login-form').addEventListener('submit', async (e) => {
             e.preventDefault(); 
-            
             const email = document.getElementById('loginInput').value.trim();
             const password = document.getElementById('passwordInput').value;
             const errorBox = document.getElementById('errorMsg');
             const btn = document.querySelector('.submit-btn');
-
             errorBox.style.display = 'none';
-            btn.textContent = 'Загрузка...';
-
+            btn.textContent = '...';
             try {
-                const response = await fetch('https://goldance.de1.netrun.io/api/auth/login', {
+                // ЗАПРОС НА AMVERA
+                const response = await fetch('https://goldance-db-makaroshkawww.msk1.amvera.tech/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: email, password: password })
                 });
-
                 const data = await response.json();
-
                 if (response.ok) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user));
@@ -175,45 +151,15 @@
                 btn.textContent = 'Войти';
             }
         });
-
-        function toggleSettings(event) {
-            event.stopPropagation(); 
-            document.getElementById('settingsMenu').classList.toggle('show');
-            document.getElementById('burgerMenu').classList.remove('show');
-        }
-        function toggleMenu(event) {
-            event.stopPropagation(); 
-            document.getElementById('burgerMenu').classList.toggle('show');
-            document.getElementById('settingsMenu').classList.remove('show');
-        }
+        function toggleSettings(event) { event.stopPropagation(); document.getElementById('burgerMenu').classList.remove('show'); document.getElementById('settingsMenu').classList.toggle('show'); }
+        function toggleMenu(event) { event.stopPropagation(); document.getElementById('settingsMenu').classList.remove('show'); document.getElementById('burgerMenu').classList.toggle('show'); }
         document.addEventListener('click', function(event) {
-            const sm = document.getElementById('settingsMenu');
-            const sb = document.getElementById('settingsBtn');
-            const bm = document.getElementById('burgerMenu');
-            const bb = document.getElementById('menuBtn');
+            const sm = document.getElementById('settingsMenu'); const sb = document.getElementById('settingsBtn');
+            const bm = document.getElementById('burgerMenu'); const bb = document.getElementById('menuBtn');
             if (!sm.contains(event.target) && event.target !== sb) sm.classList.remove('show');
             if (!bm.contains(event.target) && event.target !== bb) bm.classList.remove('show');
         });
-        function changeLang() { localStorage.setItem('userLang', document.getElementById('langSelect').value); }
-        function changePay() { localStorage.setItem('userPay', document.getElementById('paySelect').value); }
-        window.onload = function() {
-            const savedLang = localStorage.getItem('userLang');
-            const savedPay = localStorage.getItem('userPay');
-            if (savedLang) document.getElementById('langSelect').value = savedLang;
-            if (savedPay) document.getElementById('paySelect').value = savedPay;
-        };
+        function changePay() { const pay = document.getElementById('paySelect').value; localStorage.setItem('userPay', pay); }
     </script>
 </body>
-<script src="translate.js"></script>
-<script>
-    function toggleSettings(event) { event.stopPropagation(); document.getElementById('burgerMenu').classList.remove('show'); document.getElementById('settingsMenu').classList.toggle('show'); }
-    function toggleMenu(event) { event.stopPropagation(); document.getElementById('settingsMenu').classList.remove('show'); document.getElementById('burgerMenu').classList.toggle('show'); }
-    document.addEventListener('click', function(event) {
-        const sm = document.getElementById('settingsMenu'); const sb = document.getElementById('settingsBtn');
-        const bm = document.getElementById('burgerMenu'); const bb = document.getElementById('menuBtn');
-        if (!sm.contains(event.target) && event.target !== sb) sm.classList.remove('show');
-        if (!bm.contains(event.target) && event.target !== bb) bm.classList.remove('show');
-    });
-    function changePay() { const pay = document.getElementById('paySelect').value; localStorage.setItem('userPay', pay); alert('Способ оплаты изменен!'); }
-</script>
 </html>
